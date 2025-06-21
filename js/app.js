@@ -28,6 +28,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeLanguageSelector();
     updateLanguage();
     showSection('agenda');
+
+    // Initial Navigation Indicator positionieren
+    const firstNavItem = document.getElementById('nav-agenda');
+    if (firstNavItem) {
+        updateNavIndicator(firstNavItem);
+    }
 });
 
 // Verfügbare Sprachen erkennen
@@ -111,12 +117,59 @@ function initializeNavigation() {
 // Aktive Navigation aktualisieren
 function updateActiveNavButton(activeButton) {
     document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.classList.remove('active', 'text-blue-600');
-        btn.classList.add('text-gray-500');
+        btn.classList.remove('active');
+
+        // Alle Icons auf outline setzen
+        const outlineIcon = btn.querySelector('.icon-outline');
+        const filledIcon = btn.querySelector('.icon-filled');
+        if (outlineIcon && filledIcon) {
+            outlineIcon.classList.remove('hidden');
+            filledIcon.classList.add('hidden');
+        }
     });
 
-    activeButton.classList.add('active', 'text-blue-600');
-    activeButton.classList.remove('text-gray-500');
+    activeButton.classList.add('active');
+
+    // Aktives Icon auf filled setzen
+    const activeOutlineIcon = activeButton.querySelector('.icon-outline');
+    const activeFilledIcon = activeButton.querySelector('.icon-filled');
+    if (activeOutlineIcon && activeFilledIcon) {
+        activeOutlineIcon.classList.add('hidden');
+        activeFilledIcon.classList.remove('hidden');
+    }
+
+    // Animierte Linie bewegen
+    updateNavIndicator(activeButton);
+}
+
+// Navigation Indicator bewegen
+function updateNavIndicator(activeButton) {
+    const indicator = document.getElementById('nav-indicator');
+    const navContainer = activeButton.parentElement;
+
+    if (!indicator || !activeButton || !navContainer) return;
+
+    // Text-Span Element finden
+    const textSpan = activeButton.querySelector('span');
+    if (!textSpan) return;
+
+    // Positionen ermitteln
+    const buttonRect = activeButton.getBoundingClientRect();
+    const containerRect = navContainer.getBoundingClientRect();
+    const textRect = textSpan.getBoundingClientRect();
+
+    // Relative Position des Buttons innerhalb des Containers
+    const leftOffset = buttonRect.left - containerRect.left;
+    const buttonWidth = buttonRect.width;
+
+    // Textbreite und zentrierte Position
+    const textWidth = textRect.width;
+    const textLeft = textRect.left - containerRect.left;
+
+    // Linie an Textbreite anpassen und zentrieren
+    indicator.style.width = `${textWidth}px`;
+    indicator.style.left = `${textLeft}px`;
+    indicator.style.transform = 'none';
 }
 
 // Sprachwechsel initialisieren
@@ -162,16 +215,20 @@ function updateLanguage() {
     const headerTitle = document.getElementById('headerTitle');
     const titleText = translations.eventTitle || 'ZUKUNFT IST JETZT';
     headerTitle.textContent = titleText;
-    headerTitle.setAttribute('data-text', titleText);
 
     // Navigation aktualisieren
-    document.getElementById('navAgenda').textContent = translations.agenda || 'Agenda';
-    document.getElementById('navMap').textContent = translations.map || 'Plan';
-    document.getElementById('navFavorites').textContent = translations.favorites || 'Favoriten';
-    document.getElementById('navInfo').textContent = 'Info';
+    const navAgenda = document.querySelector('#nav-agenda span');
+    const navMap = document.querySelector('#nav-map span');
+    const navFavorites = document.querySelector('#nav-favorites span');
+    const navInfo = document.querySelector('#nav-info span');
+
+    if (navAgenda) navAgenda.textContent = (translations.agenda || 'AGENDA').toUpperCase();
+    if (navMap) navMap.textContent = (translations.map || 'PLAN').toUpperCase();
+    if (navFavorites) navFavorites.textContent = (translations.favorites || 'GEMERKT').toUpperCase();
+    if (navInfo) navInfo.textContent = 'INFO';
 
     // Seiten-Titel aktualisieren
-    document.title = `UniVent - ${translations.eventTitle || 'Informatiktag 2025'}`;
+    document.title = `Univent - ${translations.eventTitle || 'Informatiktag 2025'}`;
 }
 
 // Sektion anzeigen
@@ -207,8 +264,8 @@ function showSection(section) {
 // Agenda-Ansicht rendern
 function renderAgenda() {
     return `
-        <div class="p-4">
-            <h2 class="text-xl font-semibold mb-4 text-gray-900">${translations.agenda || 'Agenda'}</h2>
+        <div>
+            <h2 class="mono text-2xl mb-6">${translations.agenda || 'AGENDA'}</h2>
             <div class="space-y-4">
                 ${events.map(event => {
         // Kategorie-Übersetzung ermitteln
@@ -216,35 +273,35 @@ function renderAgenda() {
         const categoryText = translations[categoryKey] || '';
 
         return `
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                        <!-- Pills oben -->
+                    <div class="event-card p-4">
+                        <!-- Header mit Zeit und Kategorie -->
                         <div class="flex justify-between items-center mb-3">
-                            <!-- Zeit-Pill links -->
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                ${event.start} - ${event.end} ${translations.clock || 'Uhr'}
+                            <!-- Zeit-Badge links -->
+                            <span class="category-badge px-3 py-1 text-xs">
+                                ${event.start} - ${event.end}
                             </span>
                             
-                            <!-- Kategorie-Pill rechts (nur wenn Kategorie vorhanden) -->
+                            <!-- Kategorie-Badge rechts (nur wenn Kategorie vorhanden) -->
                             ${categoryText ? `
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                <span class="btn-secondary px-3 py-1 text-xs">
                                     ${categoryText}
                                 </span>
                             ` : ''}
                         </div>
                         
                         <!-- Titel -->
-                        <h3 class="font-medium text-gray-900 mb-2">${event.title}</h3>
+                        <h3 class="mono text-lg mb-2">${event.title}</h3>
                         
                         <!-- Beschreibung -->
-                        <p class="text-sm text-gray-700 mb-3">${event.description}</p>
+                        <p class="text-sm mb-3 leading-relaxed">${event.description}</p>
                         
                         <!-- Referent (falls vorhanden) -->
-                        ${event.speaker ? `<p class="text-xs text-blue-600 mb-3">${translations.speaker || 'Referent'}: ${event.speaker}</p>` : ''}
+                        ${event.speaker ? `<p class="text-xs mono mb-3">REFERENT: ${event.speaker}</p>` : ''}
                         
-                        <!-- Ort-Pill unten links -->
+                        <!-- Ort-Badge unten -->
                         <div class="flex justify-start">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                📍 ${event.location}
+                            <span class="terminal px-3 py-1 text-xs">
+                                LOC: ${event.location}
                             </span>
                         </div>
                     </div>
@@ -258,26 +315,26 @@ function renderAgenda() {
 // Karten-Ansicht rendern
 function renderMap() {
     return `
-        <div class="p-4">
-            <h2 class="text-xl font-semibold mb-4 text-gray-900">${translations.map || 'Plan'}</h2>
-            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                <div class="aspect-video bg-gray-100 rounded-md flex items-center justify-center">
+        <div>
+            <h2 class="mono text-2xl mb-6">${translations.map || 'GEBÄUDEPLAN'}</h2>
+            <div class="map-container p-4">
+                <div class="aspect-video border-tech flex items-center justify-center bg-tech">
                     <img src="./assets/floorplan.png" alt="Gebäudeplan" class="max-w-full max-h-full object-contain">
                 </div>
-                <p class="text-sm text-gray-600 mt-2">${translations.mapLegend || 'Kartenlegende'}</p>
+                <p class="text-sm mono mt-4">${translations.mapLegend || 'NAVIGATION // UNIVERSITÄT OLDENBURG'}</p>
             </div>
         </div>
     `;
 }
 
-// Favoriten-Ansicht rendern
+// Merken-Ansicht rendern
 function renderFavorites() {
     return `
-        <div class="p-4">
-            <h2 class="text-xl font-semibold mb-4 text-gray-900">${translations.favorites || 'Favoriten'}</h2>
-            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                <p class="text-gray-600">${translations.noFavorites || 'Noch keine Favoriten'}</p>
-                <p class="text-sm text-gray-500 mt-2">Favoriten-Funktionalität wird implementiert...</p>
+        <div>
+            <h2 class="mono text-2xl mb-6">${translations.favorites || 'GEMERKT'}</h2>
+            <div class="ui-element p-4">
+                <p class="mono text-sm mb-2">${translations.noFavorites || 'NOCH NICHTS GEMERKT'}</p>
+                <p class="text-sm">Merken-Funktionalität wird implementiert...</p>
             </div>
         </div>
     `;
@@ -286,34 +343,34 @@ function renderFavorites() {
 // Info-Ansicht rendern
 function renderInfo() {
     return `
-        <div class="p-4">
-            <h2 class="text-xl font-semibold mb-4 text-gray-900">Info</h2>
+        <div>
+            <h2 class="mono text-2xl mb-6">SYSTEM INFO</h2>
             <div class="space-y-4">
-                <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                    <h3 class="font-medium text-gray-900 mb-2">${translations.eventTitle || 'Informatiktag "Zukunft ist jetzt"'}</h3>
-                    <p class="text-gray-600">${translations.eventSubtitle || 'Praxisnahe Einblicke für Ihre Schüler*innen'}</p>
-                    <p class="text-gray-600">${translations.universityName || 'Universität Oldenburg'}</p>
-                    <div class="mt-3 space-y-1">
-                        <p class="text-gray-700 font-medium">${translations.eventDate || '24. Juni 2025'}</p>
-                        <p class="text-gray-600">${translations.eventTime || '8:30 - 13:30'}</p>
-                        <p class="text-gray-600">${translations.eventLocation || 'A14 Hörsaalzentrum'}</p>
+                <div class="ui-element p-4">
+                    <h3 class="mono text-lg mb-3">${translations.eventTitle || 'INFORMATIKTAG "ZUKUNFT IST JETZT"'}</h3>
+                    <p class="text-sm mb-2">${translations.eventSubtitle || 'Praxisnahe Einblicke für Ihre Schüler*innen'}</p>
+                    <p class="text-sm mb-4">${translations.universityName || 'Universität Oldenburg'}</p>
+                    <div class="terminal p-3">
+                        <p class="text-xs mb-1">DATE: ${translations.eventDate || '24. Juni 2025'}</p>
+                        <p class="text-xs mb-1">TIME: ${translations.eventTime || '8:30 - 13:30'}</p>
+                        <p class="text-xs">LOC: ${translations.eventLocation || 'A14 Hörsaalzentrum'}</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                    <h3 class="font-medium text-gray-900 mb-2">Kontakt</h3>
-                    <p class="text-gray-600">${translations.contactInfo || 'informatiktag@uol.de'}</p>
+                <div class="ui-element p-4">
+                    <h3 class="mono text-lg mb-3">KONTAKT</h3>
+                    <p class="text-sm">${translations.contactInfo || 'informatiktag@uol.de'}</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                    <h3 class="font-medium text-gray-900 mb-2">WLAN</h3>
-                    <p class="text-gray-600">${translations.wifiInfo || 'WLAN: UniOL-Guest'}</p>
+                <div class="ui-element p-4">
+                    <h3 class="mono text-lg mb-3">NETWORK</h3>
+                    <p class="text-sm terminal p-2 inline-block">${translations.wifiInfo || 'SSID: UniOL-Guest'}</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                    <h3 class="font-medium text-gray-900 mb-2">Notfall</h3>
-                    <p class="text-gray-600">${translations.emergencyInfo || 'Notfall: 0441-798-0'}</p>
+                <div class="ui-element p-4">
+                    <h3 class="mono text-lg mb-3">EMERGENCY</h3>
+                    <p class="text-sm terminal p-2 inline-block">${translations.emergencyInfo || 'CALL: 0441-798-0'}</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
-                    <h3 class="font-medium text-gray-900 mb-2">Barrierefreiheit</h3>
-                    <p class="text-gray-600">${translations.accessibilityInfo || 'Alle Räume sind barrierefrei zugänglich'}</p>
+                <div class="ui-element p-4">
+                    <h3 class="mono text-lg mb-3">ACCESSIBILITY</h3>
+                    <p class="text-sm">${translations.accessibilityInfo || 'Alle Räume sind barrierefrei zugänglich'}</p>
                 </div>
             </div>
         </div>
@@ -390,60 +447,34 @@ function updateOnlineStatus() {
 
 // Offline-Benachrichtigung anzeigen
 function showOfflineNotification() {
-    let offlineBar = document.getElementById('offline-bar');
-
-    if (!offlineBar) {
-        offlineBar = document.createElement('div');
-        offlineBar.id = 'offline-bar';
-        offlineBar.className = 'fixed top-0 left-0 right-0 bg-orange-500 text-white text-center py-2 text-sm z-50';
-        offlineBar.innerHTML = `
-            <span>${translations.offlineMode || 'Offline-Modus'}</span>
-            <span class="ml-2">📱</span>
-        `;
-        document.body.appendChild(offlineBar);
-
-        // Header anpassen
-        const header = document.querySelector('header');
-        if (header) {
-            header.style.marginTop = '40px';
-        }
+    const offlineNotification = document.getElementById('offlineNotification');
+    if (offlineNotification) {
+        offlineNotification.classList.remove('hidden');
     }
-
-    offlineBar.style.display = 'block';
 }
 
 // Offline-Benachrichtigung ausblenden
 function hideOfflineNotification() {
-    const offlineBar = document.getElementById('offline-bar');
-    if (offlineBar) {
-        offlineBar.style.display = 'none';
-
-        // Header zurücksetzen
-        const header = document.querySelector('header');
-        if (header) {
-            header.style.marginTop = '0';
-        }
+    const offlineNotification = document.getElementById('offlineNotification');
+    if (offlineNotification) {
+        offlineNotification.classList.add('hidden');
     }
 }
 
 // Update-Benachrichtigung anzeigen
 function showUpdateNotification() {
-    const updateBar = document.createElement('div');
-    updateBar.className = 'fixed bottom-20 left-4 right-4 bg-blue-600 text-white rounded-lg p-3 z-50 flex justify-between items-center';
-    updateBar.innerHTML = `
-        <span>Neue Version verfügbar!</span>
-        <button onclick="reloadApp()" class="bg-white text-blue-600 px-3 py-1 rounded text-sm font-medium">
-            Aktualisieren
-        </button>
-    `;
-    document.body.appendChild(updateBar);
+    const updateNotification = document.getElementById('updateNotification');
+    if (updateNotification) {
+        updateNotification.classList.remove('hidden');
+    }
+}
 
-    // Nach 10 Sekunden automatisch entfernen
-    setTimeout(() => {
-        if (updateBar.parentNode) {
-            updateBar.parentNode.removeChild(updateBar);
-        }
-    }, 10000);
+// Update-Benachrichtigung ausblenden
+function hideUpdateNotification() {
+    const updateNotification = document.getElementById('updateNotification');
+    if (updateNotification) {
+        updateNotification.classList.add('hidden');
+    }
 }
 
 // App neu laden

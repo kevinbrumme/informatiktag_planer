@@ -1,6 +1,6 @@
 {
-    "name": "UniVent - Informatiktag 2025",
-    "short_name": "UniVent",
+    "name": "Univent - Informatiktag 2025",
+    "short_name": "Univent",
     "description": "Informatiktag Zukunft ist jetzt - Praxisnahe Einblicke für Ihre Schüler*innen",
     "version": "1.0.0",
     "start_url": "/",
@@ -22,21 +22,6 @@
             "sizes": "32x32",
             "type": "image/png",
             "purpose": "any maskable"
-        },
-        {
-            "src": "assets/logo-uni.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-    ],
-    "screenshots": [
-        {
-            "src": "assets/floorplan.png",
-            "sizes": "1280x720",
-            "type": "image/png",
-            "platform": "wide",
-            "label": "Gebäudeplan A14 Hörsaalzentrum"
         }
     ],
     "shortcuts": [
@@ -77,11 +62,6 @@
             ]
         }
     ],
-    "related_applications": [],
-    "prefer_related_applications": false,
-    "edge_side_panel": {
-        "preferred_width": 400
-    },
     "protocol_handlers": [
         {
             "protocol": "web+univent",

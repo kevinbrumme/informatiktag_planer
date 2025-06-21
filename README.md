@@ -54,7 +54,7 @@ univent/
 
 ## 📱 Offline-Funktionalität
 
-UniVent funktioniert jetzt **vollständig offline**:
+Univent funktioniert jetzt **vollständig offline**:
 
 ### 🔄 Cache-Strategien
 - **Static Assets** - Cache First (HTML, CSS, JS, Bilder)
