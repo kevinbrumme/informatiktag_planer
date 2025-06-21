@@ -5,6 +5,9 @@ let translations = {};
 let events = [];
 let theme = {};
 let availableLanguages = [];
+let stations = [];
+let stationsColor = '#45B7D1';
+let legend = [];
 
 let serviceWorkerRegistration = null;
 
@@ -59,6 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadTranslations();
     await loadEvents();
     await loadTheme();
+    await loadStations();
+    await loadLegend();
 
     initializeNavigation();
     initializeLanguageSelector();
@@ -134,6 +139,28 @@ async function loadTheme() {
         theme = await response.json();
     } catch (error) {
         console.error('Fehler beim Laden des Themes:', error);
+    }
+}
+
+// Stationen laden
+async function loadStations() {
+    try {
+        const response = await fetch('/data/stations.json');
+        const stationsData = await response.json();
+        stations = stationsData.stations || stationsData; // Rückwärtskompatibilität
+        stationsColor = stationsData.color || '#45B7D1'; // Standardfarbe falls nicht definiert
+    } catch (error) {
+        console.error('Fehler beim Laden der Stationen:', error);
+    }
+}
+
+// Legende laden
+async function loadLegend() {
+    try {
+        const response = await fetch('/data/legend.json');
+        legend = await response.json();
+    } catch (error) {
+        console.error('Fehler beim Laden der Legende:', error);
     }
 }
 
@@ -285,6 +312,8 @@ function showSection(section) {
             break;
         case 'map':
             mainContent.innerHTML = renderMap();
+            // Map-Interaktion nach dem Rendern initialisieren
+            setTimeout(() => initializeMapInteraction(), 100);
             break;
         case 'favorites':
             mainContent.innerHTML = renderFavorites();
@@ -295,6 +324,19 @@ function showSection(section) {
         default:
             mainContent.innerHTML = renderAgenda();
     }
+
+    // Sofort nach oben scrollen
+    window.scrollTo(0, 0);
+
+    // Tab-Wechsel-Animation
+    mainContent.style.opacity = '0';
+    mainContent.style.transform = 'translateY(10px)';
+
+    setTimeout(() => {
+        mainContent.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        mainContent.style.opacity = '1';
+        mainContent.style.transform = 'translateY(0)';
+    }, 10);
 }
 
 // Agenda-Ansicht rendern
@@ -303,15 +345,11 @@ function renderAgenda() {
         <div>
             <div class="space-y-4">
                 ${events.map(event => {
-        // Kategorie-Übersetzung ermitteln (nur wenn Kategorie vorhanden)
-        let categoryText = '';
-        if (event.category) {
-            const categoryKey = `category${event.category.charAt(0).toUpperCase() + event.category.slice(1)}`;
-            categoryText = translations[categoryKey] || '';
-        }
+        // Kategorie direkt verwenden (keine Übersetzung)
+        const categoryText = event.category ? event.category.toUpperCase() : '';
 
         return `
-                    <div class="event-card pt-2 px-4 pb-4 relative">
+                    <div class="event-card pt-2 pb-0 relative">
                         <!-- Event Type Badge rechts oben (nur wenn Kategorie vorhanden) -->
                         ${categoryText && event.category ? `
                             <span class="event-type-badge event-type-${event.category}">
@@ -320,28 +358,28 @@ function renderAgenda() {
                         ` : ''}
                         
                         <!-- Zeit-Badge links oben -->
-                        <div class="mb-1">
+                        <div class="mb-1 px-4">
                             <span class="time-badge text-xs">
                                 ${event.start} - ${event.end} ${translations.clock}
                             </span>
                         </div>
                         
                         <!-- Titel -->
-                        <h3 class="mono text-lg mb-2">${event.title}</h3>
+                        <h3 class="mono text-lg px-4">${event.title}</h3>
                         
                         <!-- Beschreibung -->
-                        <p class="text-sm mb-3 leading-relaxed">${event.description}</p>
+                        <p class="text-sm mb-3 px-4">${event.description}</p>
                         
                         <!-- Referent (falls vorhanden) -->
-                        ${event.speaker ? `<p class="text-xs mono mb-3">REFERENT: ${event.speaker}</p>` : ''}
+                        ${event.speaker ? `<p class="text-xs mono mb-3 px-4">REFERENT: ${event.speaker}</p>` : ''}
                         
                         <!-- Trennlinie -->
-                        <div class="event-separator"></div>
+                        <div class="event-separator mb-1"></div>
                         
                         <!-- Ort-Badge unten -->
-                        <div class="flex justify-start">
-                            <span class="location-badge text-xs">
-                                LOC: ${event.location}
+                        <div class="px-4 pb-2">
+                                                            <span class="location-badge text-xs">
+                                Raum/Ort: ${event.location}
                             </span>
                         </div>
                     </div>
@@ -354,52 +392,33 @@ function renderAgenda() {
 
 // Karten-Ansicht rendern
 function renderMap() {
-    const stations = [
-        "Studienberatung Wirtschaftsinformatik",
-        "Applied Artifical Intelligence",
-        "Hardwarelabor",
-        "Systemanalyse und -optimierung",
-        "Foundations and Applications of Systems of Cyber-Physical-Systems",
-        "Softwareprojekt",
-        "Fachschaftsrat Informatik",
-        "Digitalisierte Energiesysteme",
-        "Adversarial Resilience Learning (OFFIS)",
-        "Studienberatung Fachbachelor Informatik",
-        "Formale Methoden",
-        "Safety-Security-Interaction",
-        "Umwelt und Nachhaltigkeit",
-        "Mainframe / Kreativität trifft Technik e.V.",
-        "Studienberatung Zwei-Fächer-Bachelor Informatik (Lehramt)",
-        "virtueller Durchgang Rechenzentrum",
-        "Systemsoftware und verteilte Systeme",
-        "Softwaretechnik",
-        "SCINECT",
-        "Mainframe / Kreativität trifft Technik e.V."
-    ];
-
-    const legend = [
-        { symbol: "G", text: "Garderobe", type: "garderobe" },
-        { symbol: "W", text: "Startpunkt Workshops", type: "workshop" },
-        { symbol: "I", text: "Information, Anmeldung, Startpunkt Informatik-Tour", type: "info" }
-    ];
 
     return `
         <div>
             <!-- Gebäudeplan -->
-            <div class="map-container p-4 mb-6">
-                <div class="aspect-video border-tech flex items-center justify-center bg-tech">
-                    <img src="/assets/floorplan.png" alt="Gebäudeplan" class="max-w-full max-h-full object-contain">
+            <div class="map-container mb-6 rounded-xl bg-white overflow-hidden">
+                <div class="relative rounded-lg overflow-hidden" style="height: 300px;">
+                    <div class="absolute top-2 left-2 z-20 bg-white/90 backdrop-blur-sm px-2 py-1 rounded">
+                        <div class="text-lg mono">Lageplan</div>
+                        <div class="text-sm mono text-gray-600">A14 Hörsaalzentrum</div>
+                    </div>
+                    <img id="mapImage" src="/assets/floorplan.png" alt="Gebäudeplan" 
+                         class="w-full h-full object-contain cursor-grab transition-transform duration-200 p-2"
+                         style="transform: scale(1) translate(0px, 0px);">
+                    <div id="mapZoomControls" class="absolute bottom-2 right-2 flex flex-col z-20">
+                        <button onclick="zoomMap(1.2)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
+                        <button onclick="zoomMap(0.8)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-b-md rounded-t-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61;">−</button>
+                    </div>
                 </div>
-                <p class="text-sm mono mt-4">${translations.mapLegend || 'NAVIGATION // UNIVERSITÄT OLDENBURG'}</p>
             </div>
 
             <!-- Nummerierte Stationen -->
             <div class="mb-6">
-                <h3 class="mono text-lg mb-4">NUMMERIERTE STATIONEN</h3>
+                <h3 class="mono text-lg mb-4">STATIONEN</h3>
                 <div class="space-y-2">
                     ${stations.map((station, index) => `
                         <div class="map-station-item">
-                            <div class="map-station-number station-number">${index + 1}</div>
+                            <div class="map-station-number" style="background-color: ${stationsColor}; color: white;">${index + 1}</div>
                             <div class="map-station-text">${station}</div>
                         </div>
                     `).join('')}
@@ -412,7 +431,7 @@ function renderMap() {
                 <div class="space-y-2">
                     ${legend.map(item => `
                         <div class="map-station-item">
-                            <div class="map-station-number station-${item.type}">${item.symbol}</div>
+                            <div class="map-station-number" style="background-color: ${item.color}; color: white;">${item.symbol}</div>
                             <div class="map-station-text">${item.text}</div>
                         </div>
                     `).join('')}
@@ -426,7 +445,7 @@ function renderMap() {
 function renderFavorites() {
     return `
         <div>
-            <div class="ui-element p-4">
+            <div class="ui-element p-4 rounded-lg">
                 <p class="mono text-sm mb-2">${translations.noFavorites || 'NOCH NICHTS GEMERKT'}</p>
                 <p class="text-sm">Merken-Funktionalität wird implementiert...</p>
             </div>
@@ -439,31 +458,22 @@ function renderInfo() {
     return `
         <div>
             <div class="space-y-4">
-                <div class="ui-element p-4">
-                    <h3 class="mono text-lg mb-3">${translations.eventTitle || 'INFORMATIKTAG "ZUKUNFT IST JETZT"'}</h3>
-                    <p class="text-sm mb-2">${translations.eventSubtitle || 'Praxisnahe Einblicke für Ihre Schüler*innen'}</p>
-                    <p class="text-sm mb-4">${translations.universityName || 'Universität Oldenburg'}</p>
-                    <div class="terminal p-3">
-                        <p class="text-xs mb-1">DATE: ${translations.eventDate || '24. Juni 2025'}</p>
-                        <p class="text-xs mb-1">TIME: ${translations.eventTime || '8:30 - 13:30'}</p>
-                        <p class="text-xs">LOC: ${translations.eventLocation || 'A14 Hörsaalzentrum'}</p>
-                    </div>
+                <div class="ui-element p-4 rounded-lg">
+                    <h3 class="mono text-lg mb-3">STUDIUM INFORMATIK</h3>
+                    <p class="text-sm mb-3">Das Studium der Informatik an der Uni Oldenburg ist ein wissenschaftliches Studium, d.h. es qualifiziert Absolvent*innen selbstständig und mit wissenschaftlichen Methoden neuartige Fragestellungen im Bereich der Informatik und ihrer Anwendungen zu untersuchen und zu lösen.</p>
+                    <a href="https://www.informatik-uni-oldenburg.de/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-sm text-white rounded-md hover:opacity-90 transition-opacity" style="background-color: #004e98;">
+                        Für mehr Informationen zum Studium
+                        <i class="ph ph-arrow-square-out text-base"></i>
+                    </a>
                 </div>
-                <div class="ui-element p-4">
-                    <h3 class="mono text-lg mb-3">KONTAKT</h3>
-                    <p class="text-sm">${translations.contactInfo || 'informatiktag@uol.de'}</p>
-                </div>
-                <div class="ui-element p-4">
+
+                <div class="ui-element p-4 rounded-lg">
                     <h3 class="mono text-lg mb-3">NETWORK</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.wifiInfo || 'SSID: UniOL-Guest'}</p>
                 </div>
-                <div class="ui-element p-4">
+                <div class="ui-element p-4 rounded-lg">
                     <h3 class="mono text-lg mb-3">EMERGENCY</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.emergencyInfo || 'CALL: 0441-798-0'}</p>
-                </div>
-                <div class="ui-element p-4">
-                    <h3 class="mono text-lg mb-3">ACCESSIBILITY</h3>
-                    <p class="text-sm">${translations.accessibilityInfo || 'Alle Räume sind barrierefrei zugänglich'}</p>
                 </div>
             </div>
         </div>
@@ -536,71 +546,153 @@ function reloadApp() {
     }
 }
 
-// Scroll-Header initialisieren
+// Scroll-Header initialisieren (deaktiviert)
 function initializeScrollHeader() {
-    let lastScrollY = window.scrollY;
-    let isHeaderCollapsed = false;
+    // Header bleibt immer sichtbar - keine Scroll-Funktionalität
+}
 
-    const headerTop = document.getElementById('headerTop');
-    const headerBottom = document.getElementById('headerBottom');
+// Map Zoom und Pan Funktionalität
+let mapScale = 1;
+let mapTranslateX = 0;
+let mapTranslateY = 0;
+let isDragging = false;
+let lastPointerX = 0;
+let lastPointerY = 0;
 
-    function updateHeader() {
-        const currentScrollY = window.scrollY;
-        const scrollDifference = currentScrollY - lastScrollY;
+function initializeMapInteraction() {
+    const mapImage = document.getElementById('mapImage');
+    const mapContainer = mapImage?.parentElement;
 
-        // Nach unten scrollen und genug gescrollt → Header kollabieren
-        if (currentScrollY > 50 && scrollDifference > 0 && !isHeaderCollapsed) {
-            collapseHeader();
-            isHeaderCollapsed = true;
-        }
-        // Nur ganz oben → Header erweitern
-        else if (currentScrollY <= 20 && isHeaderCollapsed) {
-            expandHeader();
-            isHeaderCollapsed = false;
-        }
+    if (!mapImage || !mapContainer) return;
 
-        lastScrollY = currentScrollY;
+    // Touch/Mouse Events für Dragging
+    mapImage.addEventListener('pointerdown', startDrag);
+    document.addEventListener('pointermove', drag);
+    document.addEventListener('pointerup', endDrag);
+
+    // Touch Zoom (Pinch)
+    mapContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+    mapContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    // Zoom-Controls sind immer sichtbar
+}
+
+function startDrag(e) {
+    if (mapScale <= 1) return; // Nur dragging wenn gezoomt
+
+    isDragging = true;
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+
+    const mapImage = document.getElementById('mapImage');
+    if (mapImage) {
+        mapImage.style.cursor = 'grabbing';
     }
 
-    function collapseHeader() {
-        if (headerTop) {
-            headerTop.style.maxHeight = '0px';
-            headerTop.style.marginBottom = '0px';
-            headerTop.style.opacity = '0';
-        }
-        if (headerBottom) {
-            headerBottom.style.paddingTop = '0.25rem';
-            headerBottom.style.paddingBottom = '0.25rem';
-        }
+    e.preventDefault();
+}
+
+function drag(e) {
+    if (!isDragging || mapScale <= 1) return;
+
+    const deltaX = e.clientX - lastPointerX;
+    const deltaY = e.clientY - lastPointerY;
+
+    mapTranslateX += deltaX;
+    mapTranslateY += deltaY;
+
+    // Grenzen berechnen
+    const mapImage = document.getElementById('mapImage');
+    const mapContainer = mapImage?.parentElement;
+    if (mapContainer) {
+        const containerRect = mapContainer.getBoundingClientRect();
+        const maxTranslateX = (containerRect.width * (mapScale - 1)) / 2;
+        const maxTranslateY = (containerRect.height * (mapScale - 1)) / 2;
+
+        mapTranslateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, mapTranslateX));
+        mapTranslateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, mapTranslateY));
     }
 
-    function expandHeader() {
-        if (headerTop) {
-            headerTop.style.maxHeight = '100px';
-            headerTop.style.marginBottom = '0.75rem';
-            headerTop.style.opacity = '1';
-        }
-        if (headerBottom) {
-            headerBottom.style.paddingTop = '0';
-            headerBottom.style.paddingBottom = '0';
-        }
-    }
+    updateMapTransform();
 
-    // Initial-Zustand setzen
-    if (headerTop) {
-        headerTop.style.maxHeight = '100px';
-        headerTop.style.transition = 'all 0.3s ease-in-out';
-    }
-    if (headerBottom) {
-        headerBottom.style.transition = 'all 0.3s ease-in-out';
-    }
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+}
 
-    // Scroll-Event mit Throttling
-    let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        if (scrollTimeout) {
-            cancelAnimationFrame(scrollTimeout);
+function endDrag() {
+    isDragging = false;
+    const mapImage = document.getElementById('mapImage');
+    if (mapImage) {
+        mapImage.style.cursor = mapScale > 1 ? 'grab' : 'grab';
+    }
+}
+
+let lastTouchDistance = 0;
+
+function handleTouchStart(e) {
+    if (e.touches.length === 2) {
+        lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        e.preventDefault();
+    }
+}
+
+function handleTouchMove(e) {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        const scaleChange = currentDistance / lastTouchDistance;
+
+        if (Math.abs(scaleChange - 1) > 0.01) { // Mindest-Änderung
+            zoomMap(scaleChange);
+            lastTouchDistance = currentDistance;
         }
-        scrollTimeout = requestAnimationFrame(updateHeader);
-    }, { passive: true });
-} 
+    }
+}
+
+function getTouchDistance(touch1, touch2) {
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+function zoomMap(factor) {
+    const newScale = Math.max(1, Math.min(5, mapScale * factor));
+
+    if (newScale !== mapScale) {
+        mapScale = newScale;
+
+        // Wenn rausgezoomt wird, Position zentrieren
+        if (mapScale <= 1) {
+            mapTranslateX = 0;
+            mapTranslateY = 0;
+        }
+
+        updateMapTransform();
+        updateMapCursor();
+
+        // Controls sind immer sichtbar
+    }
+}
+
+function resetMapZoom() {
+    mapScale = 1;
+    mapTranslateX = 0;
+    mapTranslateY = 0;
+    updateMapTransform();
+    updateMapCursor();
+}
+
+function updateMapTransform() {
+    const mapImage = document.getElementById('mapImage');
+    if (mapImage) {
+        mapImage.style.transform = `scale(${mapScale}) translate(${mapTranslateX}px, ${mapTranslateY}px)`;
+    }
+}
+
+function updateMapCursor() {
+    const mapImage = document.getElementById('mapImage');
+    if (mapImage) {
+        mapImage.style.cursor = mapScale > 1 ? 'grab' : 'grab';
+    }
+}
+

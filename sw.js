@@ -125,7 +125,7 @@ self.addEventListener('install', event => {
         ]).then(async () => {
             // Prüfen ob kritische Assets gecacht wurden
             const cache = await caches.open(STATIC_CACHE);
-            const criticalAssets = ['/assets/floorplan.png', '/assets/logo-uni.png', '/assets/favicon.png'];
+            const criticalAssets = ['/assets/floorplan.png', '/assets/logo_uni_oldenburg_it_department.png', '/assets/favicon.png'];
 
             for (const asset of criticalAssets) {
                 const cached = await cache.match(asset);

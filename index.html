@@ -6,27 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFORMATIKTAG 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+
     <!-- Phosphor Icons -->
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <style>
+        /* Lokale Font-Definitionen */
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/assets/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/assets/fonts/JetBrainsMono-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Noto Sans';
+            src: url('/assets/fonts/NotoSans-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Noto Sans';
+            src: url('/assets/fonts/NotoSans-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
         /* Futuristisches Design System */
         :root {
-            --color-primary: #000000;
-            --color-border: #000000;
+            --color-primary: #003c61;
+            --color-border: #003c61;
             --border-width: 1px;
             --spacing-grid: 24px;
         }
 
         * {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Noto Sans', sans-serif;
         }
 
         /* Monospace für Überschriften */
@@ -44,20 +73,25 @@
             letter-spacing: 0.05em;
         }
 
-        /* Futuristischer Gradient Hintergrund */
+        /* SVG Gradient Hintergrund mit 50% Alpha */
         body {
-            background: linear-gradient(90deg,
-                    #E6D6FF 0%,
-                    /* Pastell-Violett */
-                    #FFB3E6 35%,
-                    /* Rosa */
-                    #B3FFB3 70%,
-                    /* Neon-Gelbgrün */
-                    #CCFF99 100%
-                    /* Heller Neon-Gelbgrün */
-                );
-            background-attachment: fixed;
+            position: relative;
             min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/assets/background_gradient.svg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+            z-index: -1;
         }
 
         /* Alle UI-Elemente schwarz mit dünnen Borders */
@@ -69,9 +103,14 @@
 
         /* Header Styling */
         .header-container {
-            background-color: rgba(255, 255, 255, 0.98);
-            border-bottom: var(--border-width) solid var(--color-border);
+            background-color: #003c61;
             backdrop-filter: blur(10px);
+        }
+
+        /* Header Text weiß */
+        .header-container h1,
+        .header-container #headerTitle {
+            color: white;
         }
 
         /* Navigation Items */
@@ -173,6 +212,11 @@
             background-color: var(--color-primary);
             color: white;
             border: var(--border-width) solid var(--color-border);
+        }
+
+        /* Custom text styling */
+        .text-lg {
+            line-height: 1.5rem !important;
         }
 
         /* Utility classes */
@@ -281,7 +325,6 @@
         .event-separator {
             height: 1px;
             background-color: var(--color-border);
-            margin: 12px 0 8px 0;
         }
 
         /* Map station items */
@@ -350,12 +393,12 @@
 <body class="min-h-screen flex flex-col">
     <!-- Header -->
     <header class="header-container sticky top-0 z-50">
-        <div class="px-4 py-3">
+        <div class="px-4">
             <!-- Erste Zeile: Logo mittig oder links+rechts je nach Sprachanzahl (verschwindet beim Scrollen) -->
             <div id="headerTop"
                 class="flex items-center justify-center mb-3 transition-all duration-300 ease-in-out overflow-hidden">
                 <!-- Logo -->
-                <img src="/assets/logo-uni.png" alt="Uni Logo" class="h-12">
+                <img src="/assets/logo_uni_oldenburg_it_department_white.png" alt="Uni Logo" class="h-12 mt-3">
 
                 <!-- Sprachwechsel -->
                 <select id="languageSelect" class="text-sm ui-element px-2 py-1 hidden focus:ring-0">
@@ -365,13 +408,13 @@
 
             <!-- Zweite Zeile: Titel mittig über die ganze Breite (bleibt sichtbar) -->
             <div id="headerBottom" class="text-center transition-all duration-300 ease-in-out">
-                <h1 class="font-bold text" id="headerTitle">INFORMATIKTAG 2025</h1>
+                <h1 class="font-bold text-xl text py-2" id="headerTitle">INFORMATIKTAG 2025</h1>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main id="mainContent" class="flex-1 p-4 pb-20">
+    <main id="mainContent" class="flex-1 p-4 pb-24">
         <!-- Content wird hier dynamisch geladen -->
     </main>
 

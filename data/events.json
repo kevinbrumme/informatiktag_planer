@@ -5,7 +5,7 @@
         "end": "09:00",
         "title": "Ankommen",
         "location": "A14-HS1 / Foyer",
-        "description": "Herzlich Willkommen, wir freuen uns, euch am Informatiktag 2025 begrüßen zu dürfen. Nutzt die Zeit um euch über das Tagesprogramm zu informieren und schaut euch unsere Angebote an."
+        "description": "Herzlich Willkommen, wir freuen uns, euch am Informatiktag 2025 begrüßen zu dürfen. Nutzt die Zeit um euch über das Tagesprogramm zu informieren und schaut euch um."
     },
     {
         "id": "evt-02",
@@ -49,15 +49,6 @@
         "location": "A14-HS2",
         "description": "Detaillierte Informationen zu den Bachelor-Studiengängen Informatik, Wirtschaftsinformatik und den Studienaufbau.",
         "category": "keynote"
-    },
-    {
-        "id": "evt-07",
-        "start": "12:20",
-        "end": "12:30",
-        "title": "Quiz",
-        "location": "A14-HS2",
-        "description": "Interaktives Kahoot-Quiz rund um Informatik und die Universität Oldenburg. Tolle Preise zu gewinnen!",
-        "category": "quiz"
     },
     {
         "id": "evt-08",
