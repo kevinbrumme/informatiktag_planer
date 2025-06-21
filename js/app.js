@@ -309,20 +309,19 @@ function renderAgenda() {
         const categoryText = translations[categoryKey] || '';
 
         return `
-                    <div class="event-card p-4">
-                        <!-- Header mit Zeit und Kategorie -->
-                        <div class="flex justify-between items-center mb-3">
-                            <!-- Zeit-Badge links -->
-                            <span class="category-badge px-3 py-1 text-xs">
+                    <div class="event-card pt-2 px-4 pb-4 relative">
+                        <!-- Event Type Badge rechts oben -->
+                        ${categoryText ? `
+                            <span class="event-type-badge event-type-${event.category}">
+                                ${categoryText}
+                            </span>
+                        ` : ''}
+                        
+                        <!-- Zeit-Badge links oben -->
+                        <div class="mb-1">
+                            <span class="time-badge text-xs">
                                 ${event.start} - ${event.end}
                             </span>
-                            
-                            <!-- Kategorie-Badge rechts (nur wenn Kategorie vorhanden) -->
-                            ${categoryText ? `
-                                <span class="btn-secondary px-3 py-1 text-xs">
-                                    ${categoryText}
-                                </span>
-                            ` : ''}
                         </div>
                         
                         <!-- Titel -->
@@ -334,9 +333,12 @@ function renderAgenda() {
                         <!-- Referent (falls vorhanden) -->
                         ${event.speaker ? `<p class="text-xs mono mb-3">REFERENT: ${event.speaker}</p>` : ''}
                         
+                        <!-- Trennlinie -->
+                        <div class="event-separator"></div>
+                        
                         <!-- Ort-Badge unten -->
                         <div class="flex justify-start">
-                            <span class="terminal px-3 py-1 text-xs">
+                            <span class="location-badge text-xs">
                                 LOC: ${event.location}
                             </span>
                         </div>

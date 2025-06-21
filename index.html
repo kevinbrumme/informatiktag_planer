@@ -113,6 +113,7 @@
             background-color: rgba(255, 255, 255, 0.95);
             border: var(--border-width) solid var(--color-border);
             color: var(--color-primary);
+            border-radius: 12px;
         }
 
         /* Input Elements */
@@ -226,6 +227,91 @@
             background-color: var(--color-primary);
             color: white;
             border: var(--border-width) solid var(--color-border);
+        }
+
+        /* Time badge - no background */
+        .time-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-primary);
+        }
+
+        /* Location badge - no background */
+        .location-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-primary);
+        }
+
+        /* Event type badges with different colors */
+        .event-type-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 8px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-left: var(--border-width) solid var(--color-border);
+            border-bottom: var(--border-width) solid var(--color-border);
+            border-bottom-left-radius: 8px;
+            border-top-right-radius: 12px;
+        }
+
+        /* Event type specific colors */
+        .event-type-keynote {
+            background-color: #FF6B6B;
+            color: white;
+        }
+
+        .event-type-workshop {
+            background-color: #4ECDC4;
+            color: white;
+        }
+
+        .event-type-presentation {
+            background-color: #45B7D1;
+            color: white;
+        }
+
+        .event-type-discussion {
+            background-color: #96CEB4;
+            color: white;
+        }
+
+        .event-type-break {
+            background-color: #FFEAA7;
+            color: var(--color-primary);
+        }
+
+        .event-type-registration {
+            background-color: #DDA0DD;
+            color: white;
+        }
+
+        .event-type-closing {
+            background-color: #F0A3FF;
+            color: white;
+        }
+
+        .event-type-info {
+            background-color: #FFB347;
+            color: white;
+        }
+
+        /* Separator line */
+        .event-separator {
+            height: 1px;
+            background-color: var(--color-border);
+            margin: 12px 0 8px 0;
         }
     </style>
     <link rel="icon" type="image/png" href="/assets/favicon.png">
