@@ -1,0 +1,91 @@
+{
+    "name": "UniVent - Informatiktag 2025",
+    "short_name": "UniVent",
+    "description": "Informatiktag Zukunft ist jetzt - Praxisnahe Einblicke für Ihre Schüler*innen",
+    "version": "1.0.0",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "theme_color": "#00406B",
+    "background_color": "#FEFFFE",
+    "lang": "de",
+    "dir": "ltr",
+    "categories": [
+        "education",
+        "events",
+        "university"
+    ],
+    "icons": [
+        {
+            "src": "assets/favicon.png",
+            "sizes": "32x32",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "assets/logo-uni.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "assets/floorplan.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "platform": "wide",
+            "label": "Gebäudeplan A14 Hörsaalzentrum"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Agenda",
+            "short_name": "Agenda",
+            "description": "Direkt zur Agenda",
+            "url": "/?section=agenda",
+            "icons": [
+                {
+                    "src": "assets/favicon.png",
+                    "sizes": "32x32"
+                }
+            ]
+        },
+        {
+            "name": "Karte",
+            "short_name": "Plan",
+            "description": "Gebäudeplan anzeigen",
+            "url": "/?section=map",
+            "icons": [
+                {
+                    "src": "assets/favicon.png",
+                    "sizes": "32x32"
+                }
+            ]
+        },
+        {
+            "name": "Favoriten",
+            "short_name": "Favoriten",
+            "description": "Meine Favoriten",
+            "url": "/?section=favorites",
+            "icons": [
+                {
+                    "src": "assets/favicon.png",
+                    "sizes": "32x32"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "protocol_handlers": [
+        {
+            "protocol": "web+univent",
+            "url": "/?event=%s"
+        }
+    ]
+}

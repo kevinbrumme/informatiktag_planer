@@ -1,0 +1,22 @@
+{
+    "primary": "#00406B",
+    "primary-variant": "#003356",
+    "primary-light": "#4A6B8A",
+    "on-primary": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "surface-variant": "#F4F6F9",
+    "surface-dim": "#F7F9FC",
+    "on-surface": "#1A1A1A",
+    "on-surface-variant": "#666666",
+    "background": "#FEFFFE",
+    "on-background": "#1A1A1A",
+    "secondary": "#4A90E2",
+    "secondary-variant": "#357ABD",
+    "on-secondary": "#FFFFFF",
+    "success": "#4CAF50",
+    "warning": "#FF9800",
+    "error": "#F44336",
+    "info": "#2196F3",
+    "outline": "#E0E0E0",
+    "outline-variant": "#F0F0F0"
+}

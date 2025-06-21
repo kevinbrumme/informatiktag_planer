@@ -1,0 +1,218 @@
+[
+    {
+        "id": "evt-01",
+        "start": "08:30",
+        "end": "09:00",
+        "title": "Ankommen",
+        "location": "A14-HS1 / Foyer",
+        "description": "Begrüßungskaffee und Registrierung im Foyer. Nutzen Sie die Zeit zum Networking und um sich über das Tagesprogramm zu informieren.",
+        "mapPosition": {
+            "x": 120,
+            "y": 240
+        },
+        "shareUrl": "/?event=evt-01",
+        "category": "registration"
+    },
+    {
+        "id": "evt-02",
+        "start": "09:00",
+        "end": "09:15",
+        "title": "Begrüßung",
+        "location": "A14-HS1",
+        "description": "Offizielle Eröffnung des Informatiktags durch Prof. Dr. Schmidt, Dekan der Fakultät für Informatik.",
+        "mapPosition": {
+            "x": 110,
+            "y": 260
+        },
+        "shareUrl": "/?event=evt-02",
+        "category": "presentation",
+        "speaker": "Prof. Dr. Schmidt"
+    },
+    {
+        "id": "evt-03",
+        "start": "09:15",
+        "end": "10:00",
+        "title": "Keynote: KI in der Bildung",
+        "location": "A14-HS1",
+        "description": "Hauptvortrag über den Einsatz von Künstlicher Intelligenz im Bildungswesen. Dr. Weber zeigt aktuelle Trends und Zukunftsperspektiven auf.",
+        "mapPosition": {
+            "x": 110,
+            "y": 260
+        },
+        "shareUrl": "/?event=evt-03",
+        "category": "keynote",
+        "speaker": "Dr. Maria Weber"
+    },
+    {
+        "id": "evt-04",
+        "start": "10:00",
+        "end": "11:00",
+        "title": "Workshop: Roboter bauen",
+        "location": "W",
+        "description": "Praktischer Workshop zum Bau und Programmieren von Robotern. Für Anfänger und Fortgeschrittene geeignet. Alle Materialien werden gestellt.",
+        "mapPosition": {
+            "x": 200,
+            "y": 300
+        },
+        "shareUrl": "/?event=evt-04",
+        "category": "workshop",
+        "maxParticipants": 20,
+        "requirements": "Keine Vorkenntnisse erforderlich"
+    },
+    {
+        "id": "evt-05",
+        "start": "11:00",
+        "end": "11:15",
+        "title": "Kaffeepause",
+        "location": "Foyer",
+        "description": "Networking und Erfrischungen. Perfekte Gelegenheit, um mit Dozenten und anderen Teilnehmern ins Gespräch zu kommen.",
+        "mapPosition": {
+            "x": 120,
+            "y": 240
+        },
+        "shareUrl": "/?event=evt-05",
+        "category": "break"
+    },
+    {
+        "id": "evt-06",
+        "start": "11:15",
+        "end": "12:15",
+        "title": "Workshop: Programmieren lernen",
+        "location": "W",
+        "description": "Einführung in die Programmierung für Anfänger. Wir verwenden Python und arbeiten mit interaktiven Beispielen. Laptops werden zur Verfügung gestellt.",
+        "mapPosition": {
+            "x": 200,
+            "y": 300
+        },
+        "shareUrl": "/?event=evt-06",
+        "category": "workshop",
+        "maxParticipants": 25,
+        "language": "Python",
+        "requirements": "Keine Vorkenntnisse erforderlich"
+    },
+    {
+        "id": "evt-07",
+        "start": "12:15",
+        "end": "13:00",
+        "title": "Mittagspause",
+        "location": "Mensa",
+        "description": "Gemeinsames Mittagessen in der Mensa. Vegetarische und vegane Optionen verfügbar. Gespräche mit Studierenden und Lehrenden.",
+        "mapPosition": {
+            "x": 50,
+            "y": 180
+        },
+        "shareUrl": "/?event=evt-07",
+        "category": "break"
+    },
+    {
+        "id": "evt-08",
+        "start": "13:00",
+        "end": "14:00",
+        "title": "Präsentation: Studium der Informatik",
+        "location": "A14-HS1",
+        "description": "Vorstellung der Studiengänge Informatik, Wirtschaftsinformatik und Medieninformatik. Informationen zu Bewerbung, Studienablauf und Berufsperspektiven.",
+        "mapPosition": {
+            "x": 110,
+            "y": 260
+        },
+        "shareUrl": "/?event=evt-08",
+        "category": "presentation",
+        "speaker": "Studienberatung"
+    },
+    {
+        "id": "evt-09",
+        "start": "14:00",
+        "end": "15:00",
+        "title": "Workshop: Web-Entwicklung",
+        "location": "W",
+        "description": "Erstellen Sie Ihre erste Website mit HTML, CSS und JavaScript. Praktische Übungen mit sofortigen Ergebnissen.",
+        "mapPosition": {
+            "x": 200,
+            "y": 300
+        },
+        "shareUrl": "/?event=evt-09",
+        "category": "workshop",
+        "maxParticipants": 18,
+        "technologies": [
+            "HTML",
+            "CSS",
+            "JavaScript"
+        ],
+        "requirements": "Grundkenntnisse Computer"
+    },
+    {
+        "id": "evt-10",
+        "start": "15:00",
+        "end": "15:15",
+        "title": "Kaffeepause",
+        "location": "Foyer",
+        "description": "Kurze Erfrischungspause mit Kaffee, Tee und Gebäck.",
+        "mapPosition": {
+            "x": 120,
+            "y": 240
+        },
+        "shareUrl": "/?event=evt-10",
+        "category": "break"
+    },
+    {
+        "id": "evt-11",
+        "start": "15:15",
+        "end": "16:00",
+        "title": "Podiumsdiskussion: Digitale Zukunft",
+        "location": "A14-HS1",
+        "description": "Diskussion mit Experten aus Wissenschaft und Industrie über die digitale Transformation und ihre Auswirkungen auf Gesellschaft und Arbeitswelt.",
+        "mapPosition": {
+            "x": 110,
+            "y": 260
+        },
+        "shareUrl": "/?event=evt-11",
+        "category": "discussion",
+        "panelists": [
+            "Prof. Dr. Müller",
+            "Sarah Klein (SAP)",
+            "Dr. Thomas Berg"
+        ]
+    },
+    {
+        "id": "evt-12",
+        "start": "16:00",
+        "end": "16:30",
+        "title": "Abschluss & Verabschiedung",
+        "location": "A14-HS1",
+        "description": "Zusammenfassung des Tages und Ausblick auf weitere Veranstaltungen. Gelegenheit für Fragen und Feedback.",
+        "mapPosition": {
+            "x": 110,
+            "y": 260
+        },
+        "shareUrl": "/?event=evt-12",
+        "category": "closing"
+    },
+    {
+        "id": "info-01",
+        "start": "08:00",
+        "end": "17:00",
+        "title": "Infostand Studienberatung",
+        "location": "I",
+        "description": "Ganztägiger Infostand der Studienberatung. Persönliche Beratung zu allen Studiengängen, Bewerbungsverfahren und Studienfinanzierung.",
+        "mapPosition": {
+            "x": 80,
+            "y": 200
+        },
+        "shareUrl": "/?event=info-01",
+        "category": "info"
+    },
+    {
+        "id": "info-02",
+        "start": "08:00",
+        "end": "17:00",
+        "title": "Campusführungen",
+        "location": "I",
+        "description": "Regelmäßige Führungen über den Campus. Treffpunkt am Infostand. Dauer ca. 30 Minuten. Nächste Führungen: 10:00, 12:00, 14:00, 16:00 Uhr.",
+        "mapPosition": {
+            "x": 80,
+            "y": 200
+        },
+        "shareUrl": "/?event=info-02",
+        "category": "info"
+    }
+]
