@@ -303,14 +303,17 @@ function renderAgenda() {
         <div>
             <div class="space-y-4">
                 ${events.map(event => {
-        // Kategorie-Übersetzung ermitteln
-        const categoryKey = `category${event.category.charAt(0).toUpperCase() + event.category.slice(1)}`;
-        const categoryText = translations[categoryKey] || '';
+        // Kategorie-Übersetzung ermitteln (nur wenn Kategorie vorhanden)
+        let categoryText = '';
+        if (event.category) {
+            const categoryKey = `category${event.category.charAt(0).toUpperCase() + event.category.slice(1)}`;
+            categoryText = translations[categoryKey] || '';
+        }
 
         return `
                     <div class="event-card pt-2 px-4 pb-4 relative">
-                        <!-- Event Type Badge rechts oben -->
-                        ${categoryText ? `
+                        <!-- Event Type Badge rechts oben (nur wenn Kategorie vorhanden) -->
+                        ${categoryText && event.category ? `
                             <span class="event-type-badge event-type-${event.category}">
                                 ${categoryText}
                             </span>
@@ -319,7 +322,7 @@ function renderAgenda() {
                         <!-- Zeit-Badge links oben -->
                         <div class="mb-1">
                             <span class="time-badge text-xs">
-                                ${event.start} - ${event.end}
+                                ${event.start} - ${event.end} ${translations.clock}
                             </span>
                         </div>
                         
