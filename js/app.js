@@ -159,8 +159,10 @@ function initializeLanguageSelector() {
 // Sprache aktualisieren
 function updateLanguage() {
     // Header aktualisieren
-    document.getElementById('headerTitle').textContent = translations.eventTitle || 'UniVent';
-    document.getElementById('headerSubtitle').textContent = translations.eventDate || '24. Juni 2025';
+    const headerTitle = document.getElementById('headerTitle');
+    const titleText = translations.eventTitle || 'ZUKUNFT IST JETZT';
+    headerTitle.textContent = titleText;
+    headerTitle.setAttribute('data-text', titleText);
 
     // Navigation aktualisieren
     document.getElementById('navAgenda').textContent = translations.agenda || 'Agenda';
