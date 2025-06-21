@@ -1,16 +1,22 @@
-const CACHE_NAME = 'univent-v1.0.0';
-const STATIC_CACHE = 'univent-static-v1';
-const API_CACHE = 'univent-api-v1';
+const CACHE_NAME = 'univent-v1.1.0';
+const STATIC_CACHE = 'univent-static-v2';
+const API_CACHE = 'univent-api-v2';
 
 // Assets die immer gecacht werden sollen
 const STATIC_ASSETS = [
     '/',
     '/index.html',
     '/js/app.js',
+    // Alle Bilder und Icons
     '/assets/favicon.png',
     '/assets/logo-uni.png',
+    '/assets/logo-infoday.png',
     '/assets/floorplan.png',
-    'https://cdn.tailwindcss.com'
+    // Externe CSS/Fonts
+    'https://cdn.tailwindcss.com',
+    'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap',
+    'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css',
+    'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css'
 ];
 
 // API-Endpunkte die gecacht werden sollen
@@ -29,9 +35,42 @@ self.addEventListener('install', event => {
     event.waitUntil(
         Promise.all([
             // Statische Assets cachen
-            caches.open(STATIC_CACHE).then(cache => {
+            caches.open(STATIC_CACHE).then(async cache => {
                 console.log('[SW] Caching static assets');
-                return cache.addAll(STATIC_ASSETS);
+
+                // Basis-Assets hinzufügen
+                await cache.addAll(STATIC_ASSETS.filter(url => !url.includes('fonts.googleapis.com')));
+
+                // Google Fonts CSS laden und Font-URLs extrahieren
+                try {
+                    const fontResponse = await fetch('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+                    if (fontResponse.ok) {
+                        const fontCSS = await fontResponse.text();
+                        await cache.put('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap', new Response(fontCSS, {
+                            headers: { 'Content-Type': 'text/css' }
+                        }));
+
+                        // Font-Dateien aus CSS extrahieren und cachen
+                        const fontUrls = fontCSS.match(/https:\/\/fonts\.gstatic\.com\/[^)]+/g) || [];
+                        await Promise.allSettled(
+                            fontUrls.map(async fontUrl => {
+                                try {
+                                    const response = await fetch(fontUrl);
+                                    if (response.ok) {
+                                        await cache.put(fontUrl, response);
+                                        console.log('[SW] Cached font:', fontUrl);
+                                    }
+                                } catch (err) {
+                                    console.log('[SW] Failed to cache font:', fontUrl, err);
+                                }
+                            })
+                        );
+                    }
+                } catch (err) {
+                    console.log('[SW] Failed to process Google Fonts:', err);
+                }
+
+                return cache;
             }),
 
             // API-Daten cachen
@@ -52,7 +91,7 @@ self.addEventListener('install', event => {
                 );
             })
         ]).then(() => {
-            console.log('[SW] Installation complete');
+            console.log('[SW] Installation complete - All assets cached for offline use');
             // Sofort aktivieren
             return self.skipWaiting();
         })
@@ -113,10 +152,20 @@ function isStaticAsset(url) {
     return STATIC_ASSETS.some(asset => url.includes(asset)) ||
         url.includes('.png') ||
         url.includes('.jpg') ||
+        url.includes('.jpeg') ||
         url.includes('.svg') ||
+        url.includes('.ico') ||
+        url.includes('.webp') ||
         url.includes('.css') ||
         url.includes('.js') ||
-        url.includes('tailwindcss.com');
+        url.includes('.woff') ||
+        url.includes('.woff2') ||
+        url.includes('.ttf') ||
+        url.includes('tailwindcss.com') ||
+        url.includes('fonts.googleapis.com') ||
+        url.includes('fonts.gstatic.com') ||
+        url.includes('phosphor-icons') ||
+        url.includes('jsdelivr.net');
 }
 
 // Prüfen ob API-Request

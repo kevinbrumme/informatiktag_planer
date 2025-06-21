@@ -5,7 +5,7 @@ let translations = {};
 let events = [];
 let theme = {};
 let availableLanguages = [];
-let isOnline = navigator.onLine;
+
 let serviceWorkerRegistration = null;
 
 // App initialisieren
@@ -13,8 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Service Worker registrieren
     await registerServiceWorker();
 
-    // Offline-Status überwachen
-    initializeOfflineDetection();
+
 
     // Scroll-Header initialisieren
     initializeScrollHeader();
@@ -411,55 +410,7 @@ async function registerServiceWorker() {
     }
 }
 
-// Offline-Erkennung initialisieren
-function initializeOfflineDetection() {
-    // Online/Offline Status überwachen
-    window.addEventListener('online', () => {
-        isOnline = true;
-        console.log('[App] Back online');
-        hideOfflineNotification();
-        // Daten synchronisieren
-        if (serviceWorkerRegistration && serviceWorkerRegistration.sync) {
-            serviceWorkerRegistration.sync.register('background-sync');
-        }
-    });
 
-    window.addEventListener('offline', () => {
-        isOnline = false;
-        console.log('[App] Gone offline');
-        showOfflineNotification();
-    });
-
-    // Initial prüfen
-    updateOnlineStatus();
-}
-
-// Online-Status aktualisieren
-function updateOnlineStatus() {
-    isOnline = navigator.onLine;
-
-    if (!isOnline) {
-        showOfflineNotification();
-    } else {
-        hideOfflineNotification();
-    }
-}
-
-// Offline-Benachrichtigung anzeigen
-function showOfflineNotification() {
-    const offlineNotification = document.getElementById('offlineNotification');
-    if (offlineNotification) {
-        offlineNotification.classList.remove('hidden');
-    }
-}
-
-// Offline-Benachrichtigung ausblenden
-function hideOfflineNotification() {
-    const offlineNotification = document.getElementById('offlineNotification');
-    if (offlineNotification) {
-        offlineNotification.classList.add('hidden');
-    }
-}
 
 // Update-Benachrichtigung anzeigen
 function showUpdateNotification() {
