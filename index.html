@@ -313,6 +313,60 @@
             background-color: var(--color-border);
             margin: 12px 0 8px 0;
         }
+
+        /* Map station items */
+        .map-station-item {
+            display: flex;
+            align-items: stretch;
+            background-color: rgba(255, 255, 255, 0.95);
+            border: var(--border-width) solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .map-station-number {
+            padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: white;
+            border-right: var(--border-width) solid var(--color-border);
+            min-width: 50px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-station-text {
+            padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--color-primary);
+            flex: 1;
+        }
+
+        /* Station type colors */
+        .station-number {
+            background-color: #45B7D1;
+            /* Blau */
+        }
+
+        .station-garderobe {
+            background-color: #2D5A57;
+            /* Dunkelgrün/Petrol */
+        }
+
+        .station-workshop {
+            background-color: #7ED321;
+            /* Hellgrün */
+        }
+
+        .station-info {
+            background-color: #FF6B6B;
+            /* Rot */
+        }
     </style>
     <link rel="icon" type="image/png" href="/assets/favicon.png">
     <link rel="manifest" href="/manifest.json">

@@ -301,7 +301,6 @@ function showSection(section) {
 function renderAgenda() {
     return `
         <div>
-            <h2 class="mono text-2xl mb-6">${translations.agenda || 'AGENDA'}</h2>
             <div class="space-y-4">
                 ${events.map(event => {
         // Kategorie-Übersetzung ermitteln
@@ -352,14 +351,69 @@ function renderAgenda() {
 
 // Karten-Ansicht rendern
 function renderMap() {
+    const stations = [
+        "Studienberatung Wirtschaftsinformatik",
+        "Applied Artifical Intelligence",
+        "Hardwarelabor",
+        "Systemanalyse und -optimierung",
+        "Foundations and Applications of Systems of Cyber-Physical-Systems",
+        "Softwareprojekt",
+        "Fachschaftsrat Informatik",
+        "Digitalisierte Energiesysteme",
+        "Adversarial Resilience Learning (OFFIS)",
+        "Studienberatung Fachbachelor Informatik",
+        "Formale Methoden",
+        "Safety-Security-Interaction",
+        "Umwelt und Nachhaltigkeit",
+        "Mainframe / Kreativität trifft Technik e.V.",
+        "Studienberatung Zwei-Fächer-Bachelor Informatik (Lehramt)",
+        "virtueller Durchgang Rechenzentrum",
+        "Systemsoftware und verteilte Systeme",
+        "Softwaretechnik",
+        "SCINECT",
+        "Mainframe / Kreativität trifft Technik e.V."
+    ];
+
+    const legend = [
+        { symbol: "G", text: "Garderobe", type: "garderobe" },
+        { symbol: "W", text: "Startpunkt Workshops", type: "workshop" },
+        { symbol: "I", text: "Information, Anmeldung, Startpunkt Informatik-Tour", type: "info" }
+    ];
+
     return `
         <div>
-            <h2 class="mono text-2xl mb-6">${translations.map || 'GEBÄUDEPLAN'}</h2>
-            <div class="map-container p-4">
+            <!-- Gebäudeplan -->
+            <div class="map-container p-4 mb-6">
                 <div class="aspect-video border-tech flex items-center justify-center bg-tech">
                     <img src="/assets/floorplan.png" alt="Gebäudeplan" class="max-w-full max-h-full object-contain">
                 </div>
                 <p class="text-sm mono mt-4">${translations.mapLegend || 'NAVIGATION // UNIVERSITÄT OLDENBURG'}</p>
+            </div>
+
+            <!-- Nummerierte Stationen -->
+            <div class="mb-6">
+                <h3 class="mono text-lg mb-4">NUMMERIERTE STATIONEN</h3>
+                <div class="space-y-2">
+                    ${stations.map((station, index) => `
+                        <div class="map-station-item">
+                            <div class="map-station-number station-number">${index + 1}</div>
+                            <div class="map-station-text">${station}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- Legende -->
+            <div>
+                <h3 class="mono text-lg mb-4">LEGENDE</h3>
+                <div class="space-y-2">
+                    ${legend.map(item => `
+                        <div class="map-station-item">
+                            <div class="map-station-number station-${item.type}">${item.symbol}</div>
+                            <div class="map-station-text">${item.text}</div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         </div>
     `;
@@ -369,7 +423,6 @@ function renderMap() {
 function renderFavorites() {
     return `
         <div>
-            <h2 class="mono text-2xl mb-6">${translations.favorites || 'GEMERKT'}</h2>
             <div class="ui-element p-4">
                 <p class="mono text-sm mb-2">${translations.noFavorites || 'NOCH NICHTS GEMERKT'}</p>
                 <p class="text-sm">Merken-Funktionalität wird implementiert...</p>
@@ -382,7 +435,6 @@ function renderFavorites() {
 function renderInfo() {
     return `
         <div>
-            <h2 class="mono text-2xl mb-6">SYSTEM INFO</h2>
             <div class="space-y-4">
                 <div class="ui-element p-4">
                     <h3 class="mono text-lg mb-3">${translations.eventTitle || 'INFORMATIKTAG "ZUKUNFT IST JETZT"'}</h3>
