@@ -1,6 +1,9 @@
-const CACHE_NAME = 'univent-v1.1.0';
-const STATIC_CACHE = 'univent-static-v2';
-const API_CACHE = 'univent-api-v2';
+// Development-Modus erkennen
+const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port;
+
+const CACHE_NAME = isDevelopment ? 'univent-dev' : 'univent-v1.2.0';
+const STATIC_CACHE = isDevelopment ? 'univent-static-dev' : 'univent-static-v4';
+const API_CACHE = isDevelopment ? 'univent-api-dev' : 'univent-api-v4';
 
 // Assets die immer gecacht werden sollen
 const STATIC_ASSETS = [
@@ -38,8 +41,37 @@ self.addEventListener('install', event => {
             caches.open(STATIC_CACHE).then(async cache => {
                 console.log('[SW] Caching static assets');
 
-                // Basis-Assets hinzufügen
-                await cache.addAll(STATIC_ASSETS.filter(url => !url.includes('fonts.googleapis.com')));
+                // Assets einzeln cachen für bessere Fehlerbehandlung
+                const localAssets = STATIC_ASSETS.filter(url => !url.includes('http'));
+                const externalAssets = STATIC_ASSETS.filter(url => url.includes('http') && !url.includes('fonts.googleapis.com'));
+
+                // Lokale Assets (kritisch - müssen funktionieren)
+                for (const asset of localAssets) {
+                    try {
+                        const response = await fetch(asset);
+                        if (response.ok) {
+                            await cache.put(asset, response);
+                            console.log('[SW] Cached local asset:', asset);
+                        } else {
+                            console.error('[SW] Failed to fetch local asset:', asset, response.status);
+                        }
+                    } catch (err) {
+                        console.error('[SW] Error caching local asset:', asset, err);
+                    }
+                }
+
+                // Externe Assets (optional)
+                for (const asset of externalAssets) {
+                    try {
+                        const response = await fetch(asset);
+                        if (response.ok) {
+                            await cache.put(asset, response);
+                            console.log('[SW] Cached external asset:', asset);
+                        }
+                    } catch (err) {
+                        console.log('[SW] Failed to cache external asset:', asset, err);
+                    }
+                }
 
                 // Google Fonts CSS laden und Font-URLs extrahieren
                 try {
@@ -90,7 +122,20 @@ self.addEventListener('install', event => {
                     })
                 );
             })
-        ]).then(() => {
+        ]).then(async () => {
+            // Prüfen ob kritische Assets gecacht wurden
+            const cache = await caches.open(STATIC_CACHE);
+            const criticalAssets = ['/assets/floorplan.png', '/assets/logo-uni.png', '/assets/favicon.png'];
+
+            for (const asset of criticalAssets) {
+                const cached = await cache.match(asset);
+                if (cached) {
+                    console.log('[SW] ✅ Critical asset cached:', asset);
+                } else {
+                    console.error('[SW] ❌ Critical asset NOT cached:', asset);
+                }
+            }
+
             console.log('[SW] Installation complete - All assets cached for offline use');
             // Sofort aktivieren
             return self.skipWaiting();
@@ -181,22 +226,56 @@ function isNavigationRequest(request) {
 
 // Cache First Strategie für statische Assets
 async function handleStaticAsset(request) {
+    // Im Development-Modus: Network First für HTML/JS/CSS
+    if (isDevelopment && (request.url.includes('.html') || request.url.includes('.js') || request.url.includes('.css'))) {
+        try {
+            console.log('[SW] Development mode - Network first for:', request.url);
+            const networkResponse = await fetch(request);
+            if (networkResponse.ok) {
+                const cache = await caches.open(STATIC_CACHE);
+                cache.put(request, networkResponse.clone());
+            }
+            return networkResponse;
+        } catch (error) {
+            console.log('[SW] Network failed, trying cache:', request.url);
+            return caches.match(request);
+        }
+    }
+
+    // Standard Cache First für Bilder und Production
     try {
+        // Erst im Cache suchen
         const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
+        if (cachedResponse && !isDevelopment) {
+            console.log('[SW] Serving from cache:', request.url);
             return cachedResponse;
         }
 
+        // Wenn nicht im Cache oder Development, versuche aus Netzwerk zu laden
         const networkResponse = await fetch(request);
         if (networkResponse.ok) {
             const cache = await caches.open(STATIC_CACHE);
             cache.put(request, networkResponse.clone());
+            console.log('[SW] Cached new asset:', request.url);
         }
         return networkResponse;
 
     } catch (error) {
-        console.log('[SW] Static asset fetch failed:', error);
-        return caches.match(request);
+        console.log('[SW] Static asset fetch failed:', request.url, error);
+
+        // Als letzter Ausweg: nochmal im Cache suchen
+        const fallbackResponse = await caches.match(request);
+        if (fallbackResponse) {
+            console.log('[SW] Serving fallback from cache:', request.url);
+            return fallbackResponse;
+        }
+
+        // Wenn gar nichts funktioniert
+        console.error('[SW] Asset not available offline:', request.url);
+        return new Response('Asset not available offline', {
+            status: 503,
+            statusText: 'Service Unavailable'
+        });
     }
 }
 

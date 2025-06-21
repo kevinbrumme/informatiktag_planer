@@ -8,10 +8,47 @@ let availableLanguages = [];
 
 let serviceWorkerRegistration = null;
 
+// Debug-Funktion für Cache-Inhalt
+async function debugCache() {
+    if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        console.log('[Debug] Available caches:', cacheNames);
+
+        for (const cacheName of cacheNames) {
+            const cache = await caches.open(cacheName);
+            const requests = await cache.keys();
+            console.log(`[Debug] Cache ${cacheName} contains:`, requests.map(r => r.url));
+        }
+    }
+}
+
+// Development-Funktion: Cache leeren
+async function clearCache() {
+    if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+        console.log('[Dev] All caches cleared');
+        window.location.reload();
+    }
+}
+
+// Development-Modus erkennen
+const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port;
+
+// Globale Funktionen für Development
+if (isDevelopment) {
+    window.clearCache = clearCache;
+    window.debugCache = debugCache;
+    console.log('[Dev] Development mode detected. Use clearCache() or debugCache() in console.');
+}
+
 // App initialisieren
 document.addEventListener('DOMContentLoaded', async () => {
     // Service Worker registrieren
     await registerServiceWorker();
+
+    // Debug: Cache-Inhalt nach 2 Sekunden prüfen
+    setTimeout(debugCache, 2000);
 
 
 
@@ -47,7 +84,7 @@ async function detectAvailableLanguages() {
 
     for (const lang of possibleLanguages) {
         try {
-            const response = await fetch(`./data/i18n/${lang.file}`, { method: 'HEAD' });
+            const response = await fetch(`/data/i18n/${lang.file}`, { method: 'HEAD' });
             if (response.ok) {
                 availableLanguages.push(lang);
             }
@@ -69,7 +106,7 @@ async function detectAvailableLanguages() {
 // Übersetzungen laden
 async function loadTranslations() {
     try {
-        const response = await fetch(`./data/i18n/${currentLanguage}.json`);
+        const response = await fetch(`/data/i18n/${currentLanguage}.json`);
         if (response.ok) {
             translations = await response.json();
         } else {
@@ -83,7 +120,7 @@ async function loadTranslations() {
 // Events laden
 async function loadEvents() {
     try {
-        const response = await fetch('./data/events.json');
+        const response = await fetch('/data/events.json');
         events = await response.json();
     } catch (error) {
         console.error('Fehler beim Laden der Events:', error);
@@ -93,7 +130,7 @@ async function loadEvents() {
 // Theme laden
 async function loadTheme() {
     try {
-        const response = await fetch('./data/theme.json');
+        const response = await fetch('/data/theme.json');
         theme = await response.json();
     } catch (error) {
         console.error('Fehler beim Laden des Themes:', error);
@@ -318,7 +355,7 @@ function renderMap() {
             <h2 class="mono text-2xl mb-6">${translations.map || 'GEBÄUDEPLAN'}</h2>
             <div class="map-container p-4">
                 <div class="aspect-video border-tech flex items-center justify-center bg-tech">
-                    <img src="./assets/floorplan.png" alt="Gebäudeplan" class="max-w-full max-h-full object-contain">
+                    <img src="/assets/floorplan.png" alt="Gebäudeplan" class="max-w-full max-h-full object-contain">
                 </div>
                 <p class="text-sm mono mt-4">${translations.mapLegend || 'NAVIGATION // UNIVERSITÄT OLDENBURG'}</p>
             </div>
@@ -380,7 +417,7 @@ function renderInfo() {
 async function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         try {
-            serviceWorkerRegistration = await navigator.serviceWorker.register('./sw.js');
+            serviceWorkerRegistration = await navigator.serviceWorker.register('/sw.js');
             console.log('[App] Service Worker registered:', serviceWorkerRegistration);
 
             // Auf Updates hören

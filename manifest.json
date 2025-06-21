@@ -18,7 +18,7 @@
     ],
     "icons": [
         {
-            "src": "assets/favicon.png",
+            "src": "/assets/favicon.png",
             "sizes": "32x32",
             "type": "image/png",
             "purpose": "any maskable"
@@ -32,7 +32,7 @@
             "url": "/?section=agenda",
             "icons": [
                 {
-                    "src": "assets/favicon.png",
+                    "src": "/assets/favicon.png",
                     "sizes": "32x32"
                 }
             ]
@@ -44,7 +44,7 @@
             "url": "/?section=map",
             "icons": [
                 {
-                    "src": "assets/favicon.png",
+                    "src": "/assets/favicon.png",
                     "sizes": "32x32"
                 }
             ]
@@ -56,7 +56,7 @@
             "url": "/?section=favorites",
             "icons": [
                 {
-                    "src": "assets/favicon.png",
+                    "src": "/assets/favicon.png",
                     "sizes": "32x32"
                 }
             ]
