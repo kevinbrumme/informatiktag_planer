@@ -496,8 +496,8 @@ function initializeScrollHeader() {
             collapseHeader();
             isHeaderCollapsed = true;
         }
-        // Nach oben scrollen oder ganz oben → Header erweitern
-        else if ((scrollDifference < -10 || currentScrollY <= 20) && isHeaderCollapsed) {
+        // Nur ganz oben → Header erweitern
+        else if (currentScrollY <= 20 && isHeaderCollapsed) {
             expandHeader();
             isHeaderCollapsed = false;
         }
