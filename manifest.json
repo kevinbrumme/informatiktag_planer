@@ -2,7 +2,7 @@
     "name": "Informatiktag 2025",
     "short_name": "Informatiktag",
     "description": "Informatiktag Zukunft ist jetzt - Praxisnahe Einblicke für Ihre Schüler*innen",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",
