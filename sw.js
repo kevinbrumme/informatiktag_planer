@@ -1,9 +1,9 @@
 // Development-Modus erkennen
 const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port;
 
-const CACHE_NAME = isDevelopment ? 'univent-dev' : 'univent-v1.2.0';
-const STATIC_CACHE = isDevelopment ? 'univent-static-dev' : 'univent-static-v4';
-const API_CACHE = isDevelopment ? 'univent-api-dev' : 'univent-api-v4';
+const CACHE_NAME = isDevelopment ? 'informatiktag-dev' : 'informatiktag-v1.2.0';
+const STATIC_CACHE = isDevelopment ? 'informatiktag-static-dev' : 'informatiktag-static-v4';
+const API_CACHE = isDevelopment ? 'informatiktag-api-dev' : 'informatiktag-api-v4';
 
 // Assets die immer gecacht werden sollen
 const STATIC_ASSETS = [

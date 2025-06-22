@@ -1,4 +1,4 @@
-# Univent 📱
+# Informatiktag 2025 📱
 
 ## 🚀 Lokales Testen
 
@@ -31,7 +31,7 @@ App läuft auf: http://localhost:3000
 ## 🔧 Projekt-Struktur
 
 ```
-univent/
+informatiktag/
 ├── index.html          # Haupt-App
 ├── sw.js              # Service Worker (Offline-Cache)
 ├── manifest.json      # PWA-Manifest
@@ -54,7 +54,7 @@ univent/
 
 ## 📱 Offline-Funktionalität
 
-Univent funktioniert jetzt **vollständig offline**:
+Die Informatiktag-App funktioniert jetzt **vollständig offline**:
 
 ### 🔄 Cache-Strategien
 - **Static Assets** - Cache First (HTML, CSS, JS, Bilder)
@@ -77,4 +77,4 @@ Univent funktioniert jetzt **vollständig offline**:
 1. Repository auf GitHub pushen
 2. In Settings → Pages → Source: "Deploy from branch"
 3. Branch: main, Folder: / (root)
-4. App verfügbar unter: `https://username.github.io/univent` 
+4. App verfügbar unter: `https://username.github.io/informatiktag` 

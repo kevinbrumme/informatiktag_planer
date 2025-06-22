@@ -1,6 +1,6 @@
 {
-    "name": "Univent - Informatiktag 2025",
-    "short_name": "Univent",
+    "name": "Informatiktag 2025",
+    "short_name": "Informatiktag",
     "description": "Informatiktag Zukunft ist jetzt - Praxisnahe Einblicke für Ihre Schüler*innen",
     "version": "1.0.0",
     "start_url": "/",
@@ -64,7 +64,7 @@
     ],
     "protocol_handlers": [
         {
-            "protocol": "web+univent",
+            "protocol": "web+informatiktag",
             "url": "/?event=%s"
         }
     ]

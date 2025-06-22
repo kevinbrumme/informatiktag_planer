@@ -281,7 +281,7 @@ function updateLanguage() {
     if (navInfo) navInfo.textContent = 'INFO';
 
     // Seiten-Titel aktualisieren
-    document.title = `Univent - ${translations.eventTitle || 'Informatiktag 2025'}`;
+    document.title = `${translations.eventTitle || 'Informatiktag 2025'}`;
 }
 
 // Sektion anzeigen
