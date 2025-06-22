@@ -404,8 +404,8 @@ function renderMap() {
                      class="w-full h-full object-contain cursor-grab p-2"
                          style="transform: scale(1) translate(0px, 0px);">
                     <div id="mapZoomControls" class="absolute bottom-2 right-2 flex flex-col z-20">
-                        <button onclick="zoomMap(1.25)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
-                        <button onclick="zoomMap(0.8)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-b-md rounded-t-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61;">−</button>
+                        <button onclick="console.log('[Button] Plus clicked'); zoomMap(1.2)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
+                        <button onclick="console.log('[Button] Minus clicked'); zoomMap(0.8333)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-b-md rounded-t-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61;">−</button>
                     </div>
                 </div>
             </div>
@@ -595,13 +595,27 @@ function drag(e) {
     mapTranslateX += deltaX;
     mapTranslateY += deltaY;
 
-    // Grenzen berechnen
+    // Grenzen berechnen - verhindert Überschiebung
     const mapImage = document.getElementById('mapImage');
     const mapContainer = mapImage?.parentElement;
     if (mapContainer) {
         const containerRect = mapContainer.getBoundingClientRect();
-        const maxTranslateX = (containerRect.width * (mapScale - 1)) / 2;
-        const maxTranslateY = (containerRect.height * (mapScale - 1)) / 2;
+
+        // Bei object-contain und padding müssen wir die tatsächliche Bildgröße berechnen
+        // Das Bild hat padding: 0.5rem (8px auf jeder Seite)
+        const padding = 16; // 8px * 2 (links+rechts bzw. oben+unten)
+        const availableWidth = containerRect.width - padding;
+        const availableHeight = containerRect.height - padding;
+
+        // Die tatsächliche Bildgröße wird durch object-contain bestimmt
+        // und entspricht der verfügbaren Container-Größe minus padding
+        const imageDisplayWidth = availableWidth;
+        const imageDisplayHeight = availableHeight;
+
+        // Mit translate() scale() - translate wird NICHT skaliert
+        // Maximale Verschiebung = (Bildgröße * (scale - 1)) / 2
+        const maxTranslateX = Math.max(0, (imageDisplayWidth * (mapScale - 1)) / 2);
+        const maxTranslateY = Math.max(0, (imageDisplayHeight * (mapScale - 1)) / 2);
 
         mapTranslateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, mapTranslateX));
         mapTranslateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, mapTranslateY));
@@ -624,6 +638,13 @@ function endDrag() {
 let lastTouchDistance = 0;
 
 function handleTouchStart(e) {
+    // Zoom-Buttons nicht blockieren - nur bei direkten Touches auf das mapImage
+    const target = e.target;
+    if (target.closest('#mapZoomControls')) {
+        console.log('[Touch] Ignoring touch on zoom controls');
+        return; // Zoom-Controls nicht blockieren
+    }
+
     if (e.touches.length === 2) {
         // Nur bei Pinch-Zoom (zwei Finger) Browser-Zoom verhindern
         e.preventDefault();
@@ -668,13 +689,27 @@ function handleTouchMove(e) {
         mapTranslateX += deltaX;
         mapTranslateY += deltaY;
 
-        // Grenzen berechnen
+        // Grenzen berechnen - verhindert Überschiebung
         const mapImage = document.getElementById('mapImage');
         const mapContainer = mapImage?.parentElement;
         if (mapContainer) {
             const containerRect = mapContainer.getBoundingClientRect();
-            const maxTranslateX = (containerRect.width * (mapScale - 1)) / 2;
-            const maxTranslateY = (containerRect.height * (mapScale - 1)) / 2;
+
+            // Bei object-contain und padding müssen wir die tatsächliche Bildgröße berechnen
+            // Das Bild hat padding: 0.5rem (8px auf jeder Seite)
+            const padding = 16; // 8px * 2 (links+rechts bzw. oben+unten)
+            const availableWidth = containerRect.width - padding;
+            const availableHeight = containerRect.height - padding;
+
+            // Die tatsächliche Bildgröße wird durch object-contain bestimmt
+            // und entspricht der verfügbaren Container-Größe minus padding
+            const imageDisplayWidth = availableWidth;
+            const imageDisplayHeight = availableHeight;
+
+            // Mit translate() scale() - translate wird NICHT skaliert
+            // Maximale Verschiebung = (Bildgröße * (scale - 1)) / 2
+            const maxTranslateX = Math.max(0, (imageDisplayWidth * (mapScale - 1)) / 2);
+            const maxTranslateY = Math.max(0, (imageDisplayHeight * (mapScale - 1)) / 2);
 
             mapTranslateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, mapTranslateX));
             mapTranslateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, mapTranslateY));
@@ -689,6 +724,13 @@ function handleTouchMove(e) {
 }
 
 function handleTouchEnd(e) {
+    // Zoom-Buttons nicht blockieren
+    const target = e.target;
+    if (target.closest('#mapZoomControls')) {
+        console.log('[Touch] Ignoring touch end on zoom controls');
+        return; // Zoom-Controls nicht blockieren
+    }
+
     // Nur preventDefault wenn wir aktiv mit der Karte interagiert haben
     if (e.changedTouches.length === 1 && mapScale > 1) {
         // Nur verhindern wenn die Karte gezoomt ist (war wahrscheinlich Dragging)
@@ -712,21 +754,48 @@ function getTouchDistance(touch1, touch2) {
 }
 
 function zoomMap(factor) {
-    const newScale = Math.max(0.5, Math.min(8, mapScale * factor));
+    console.log(`[Zoom] Current scale: ${mapScale}, Factor: ${factor}`);
+    const newScale = Math.max(1, Math.min(4, mapScale * factor));
+    console.log(`[Zoom] New scale: ${newScale}`);
 
     if (newScale !== mapScale) {
         mapScale = newScale;
 
-        // Wenn auf Originalgröße oder kleiner gezoomt wird, Position zentrieren
+        // Wenn auf Originalgröße zurückgezoomt wird, Position zentrieren
         if (mapScale <= 1) {
             mapTranslateX = 0;
             mapTranslateY = 0;
+        } else {
+            // Position nach Zoom korrigieren - verhindert dass Bild zu weit innen liegt
+            const mapImage = document.getElementById('mapImage');
+            const mapContainer = mapImage?.parentElement;
+            if (mapContainer) {
+                const containerRect = mapContainer.getBoundingClientRect();
+
+                // Bei object-contain und padding müssen wir die tatsächliche Bildgröße berechnen
+                const padding = 16; // 8px * 2 (links+rechts bzw. oben+unten)
+                const availableWidth = containerRect.width - padding;
+                const availableHeight = containerRect.height - padding;
+
+                const imageDisplayWidth = availableWidth;
+                const imageDisplayHeight = availableHeight;
+
+                // Neue maximale Verschiebung berechnen
+                const maxTranslateX = Math.max(0, (imageDisplayWidth * (mapScale - 1)) / 2);
+                const maxTranslateY = Math.max(0, (imageDisplayHeight * (mapScale - 1)) / 2);
+
+                // Position in die neuen Grenzen einpassen
+                mapTranslateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, mapTranslateX));
+                mapTranslateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, mapTranslateY));
+            }
         }
 
         updateMapTransform();
         updateMapCursor();
 
-        // Controls sind immer sichtbar
+        console.log(`[Zoom] Applied scale: ${mapScale}, Position: ${mapTranslateX}, ${mapTranslateY}`);
+    } else {
+        console.log(`[Zoom] No change - scale remained: ${mapScale}`);
     }
 }
 
@@ -741,7 +810,9 @@ function resetMapZoom() {
 function updateMapTransform() {
     const mapImage = document.getElementById('mapImage');
     if (mapImage) {
-        mapImage.style.transform = `scale(${mapScale}) translate(${mapTranslateX}px, ${mapTranslateY}px)`;
+        // Transform-Reihenfolge: translate DANN scale
+        // So wird zuerst verschoben, dann skaliert (nicht umgekehrt)
+        mapImage.style.transform = `translate(${mapTranslateX}px, ${mapTranslateY}px) scale(${mapScale})`;
     }
 }
 
