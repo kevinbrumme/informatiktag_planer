@@ -79,39 +79,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Verfügbare Sprachen erkennen
 async function detectAvailableLanguages() {
-    const possibleLanguages = [
-        { code: 'de', name: '🇩🇪 DE', file: 'de.json' },
-        { code: 'en', name: '🇬🇧 EN', file: 'en.json' },
-        { code: 'fr', name: '🇫🇷 FR', file: 'fr.json' }
+    // Nur Deutsch verwenden
+    availableLanguages = [
+        { code: 'de', name: '🇩🇪 DE', file: 'de.json' }
     ];
 
-    availableLanguages = [];
-
-    for (const lang of possibleLanguages) {
-        try {
-            const response = await fetch(`/data/i18n/${lang.file}`, { method: 'HEAD' });
-            if (response.ok) {
-                availableLanguages.push(lang);
-            }
-        } catch (error) {
-            // Sprache nicht verfügbar (404 ist erwartetes Verhalten)
-            // console.log(`Sprache ${lang.code} nicht verfügbar`);
+    // Prüfen ob de.json verfügbar ist
+    try {
+        const response = await fetch('data/i18n/de.json', { method: 'HEAD' });
+        if (response.ok) {
+            currentLanguage = 'de';
+            console.log('Deutsche Sprache verfügbar');
+        } else {
+            console.warn('Deutsche Sprachdatei nicht gefunden');
         }
+    } catch (error) {
+        console.warn('Fehler beim Prüfen der deutschen Sprachdatei:', error);
     }
-
-    // Fallback zu Deutsch, falls verfügbar
-    if (availableLanguages.length > 0) {
-        const defaultLang = availableLanguages.find(lang => lang.code === 'de') || availableLanguages[0];
-        currentLanguage = defaultLang.code;
-    }
-
-    console.log('Verfügbare Sprachen:', availableLanguages);
 }
 
 // Übersetzungen laden
 async function loadTranslations() {
     try {
-        const response = await fetch(`/data/i18n/${currentLanguage}.json`);
+        const response = await fetch(`data/i18n/${currentLanguage}.json`);
         if (response.ok) {
             translations = await response.json();
         } else {
@@ -483,7 +473,7 @@ function renderInfo() {
 async function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         try {
-            serviceWorkerRegistration = await navigator.serviceWorker.register('/sw.js');
+            serviceWorkerRegistration = await navigator.serviceWorker.register('sw.js');
             console.log('[App] Service Worker registered:', serviceWorkerRegistration);
 
             // Auf Updates hören
