@@ -125,7 +125,7 @@ async function loadTranslations() {
 // Events laden
 async function loadEvents() {
     try {
-        const response = await fetch('/data/events.json');
+        const response = await fetch('data/events.json');
         events = await response.json();
     } catch (error) {
         console.error('Fehler beim Laden der Events:', error);
@@ -135,7 +135,7 @@ async function loadEvents() {
 // Theme laden
 async function loadTheme() {
     try {
-        const response = await fetch('/data/theme.json');
+        const response = await fetch('data/theme.json');
         theme = await response.json();
     } catch (error) {
         console.error('Fehler beim Laden des Themes:', error);
@@ -145,7 +145,7 @@ async function loadTheme() {
 // Stationen laden
 async function loadStations() {
     try {
-        const response = await fetch('/data/stations.json');
+        const response = await fetch('data/stations.json');
         const stationsData = await response.json();
         stations = stationsData.stations || stationsData; // Rückwärtskompatibilität
         stationsColor = stationsData.color || '#45B7D1'; // Standardfarbe falls nicht definiert
@@ -157,7 +157,7 @@ async function loadStations() {
 // Legende laden
 async function loadLegend() {
     try {
-        const response = await fetch('/data/legend.json');
+        const response = await fetch('data/legend.json');
         legend = await response.json();
     } catch (error) {
         console.error('Fehler beim Laden der Legende:', error);
