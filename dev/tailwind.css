@@ -1,5 +1,45 @@
 @import "tailwindcss";
 
+/* Touch-Verhalten kontrollieren - nur Touch-Zoom verhindern */
+html {
+    /* Verhindert Doppeltap-Zoom und Touch-Zoom, aber erlaubt Browser-Zoom */
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+/* Tap-Highlights und Touch-Callouts entfernen */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Text-Selektion kontrolliert erlauben */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+div.event-description {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Buttons und Navigation: keine Text-Selektion */
+button,
+.nav-item,
+.btn-primary,
+.btn-secondary {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /* Lokale Font-Definitionen */
 @font-face {
     font-family: 'JetBrains Mono';

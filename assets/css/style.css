@@ -575,6 +575,26 @@
     }
   }
 }
+html {
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+p, h1, h2, h3, h4, h5, h6, span, div.event-description {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+button, .nav-item, .btn-primary, .btn-secondary {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('../fonts/JetBrainsMono-Regular.ttf') format('truetype');
