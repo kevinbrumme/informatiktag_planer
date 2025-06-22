@@ -392,9 +392,9 @@
 
 <body class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="header-container sticky top-0 z-50">
+    <header class="header-container">
         <div class="px-4">
-            <!-- Erste Zeile: Logo mittig oder links+rechts je nach Sprachanzahl (verschwindet beim Scrollen) -->
+            <!-- Erste Zeile: Logo mittig oder links+rechts je nach Sprachanzahl (scrollt mit) -->
             <div id="headerTop"
                 class="flex items-center justify-center mb-3 transition-all duration-300 ease-in-out overflow-hidden">
                 <!-- Logo -->
@@ -405,13 +405,15 @@
                     <!-- Wird dynamisch mit verfügbaren Sprachen gefüllt -->
                 </select>
             </div>
-
-            <!-- Zweite Zeile: Titel mittig über die ganze Breite (bleibt sichtbar) -->
-            <div id="headerBottom" class="text-center transition-all duration-300 ease-in-out">
-                <h1 class="font-bold text-xl text py-2" id="headerTitle">INFORMATIKTAG 2025</h1>
-            </div>
         </div>
     </header>
+
+    <!-- Sticky Titel (getrennt vom Header) -->
+    <div id="headerBottom" class="sticky top-0 z-50 header-container text-center">
+        <div class="px-4">
+            <h1 class="font-bold text-xl py-2" id="headerTitle">INFORMATIKTAG 2025</h1>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main id="mainContent" class="flex-1 p-4 pb-24">

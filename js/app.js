@@ -305,38 +305,37 @@ function showSection(section) {
         updateActiveNavButton(activeButton);
     }
 
-    // Content laden
-    switch (section) {
-        case 'agenda':
-            mainContent.innerHTML = renderAgenda();
-            break;
-        case 'map':
-            mainContent.innerHTML = renderMap();
-            // Map-Interaktion nach dem Rendern initialisieren
-            setTimeout(() => initializeMapInteraction(), 100);
-            break;
-        case 'favorites':
-            mainContent.innerHTML = renderFavorites();
-            break;
-        case 'info':
-            mainContent.innerHTML = renderInfo();
-            break;
-        default:
-            mainContent.innerHTML = renderAgenda();
-    }
-
     // Sofort nach oben scrollen
     window.scrollTo(0, 0);
 
-    // Tab-Wechsel-Animation
+    // Fade-out Animation
+    mainContent.style.transition = 'opacity 0.1s ease';
     mainContent.style.opacity = '0';
-    mainContent.style.transform = 'translateY(10px)';
 
     setTimeout(() => {
-        mainContent.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        // Content laden nach dem Fade-out
+        switch (section) {
+            case 'agenda':
+                mainContent.innerHTML = renderAgenda();
+                break;
+            case 'map':
+                mainContent.innerHTML = renderMap();
+                // Map-Interaktion nach dem Rendern initialisieren
+                setTimeout(() => initializeMapInteraction(), 100);
+                break;
+            case 'favorites':
+                mainContent.innerHTML = renderFavorites();
+                break;
+            case 'info':
+                mainContent.innerHTML = renderInfo();
+                break;
+            default:
+                mainContent.innerHTML = renderAgenda();
+        }
+
+        // Fade-in Animation
         mainContent.style.opacity = '1';
-        mainContent.style.transform = 'translateY(0)';
-    }, 10);
+    }, 100);
 }
 
 // Agenda-Ansicht rendern
