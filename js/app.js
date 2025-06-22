@@ -558,17 +558,46 @@ function initializeMapInteraction() {
     document.addEventListener('pointermove', drag);
     document.addEventListener('pointerup', endDrag);
 
-    // Touch Zoom (Pinch) - aber verhindert Browser-Zoom
-    mapContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
-    mapContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
-    mapContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
+    // Pinch-to-Zoom wird IMMER über den Container abgefangen
+    // Das erlaubt normales Scrolling auf dem Bild bei mapScale = 1
+    mapContainer.addEventListener('touchstart', handleContainerTouchStart, { passive: false });
+    mapContainer.addEventListener('touchmove', handleContainerTouchMove, { passive: false });
+    mapContainer.addEventListener('touchend', handleContainerTouchEnd, { passive: false });
 
-    // Verhindert alle Touch-Gesten die zu Browser-Zoom führen könnten
-    mapContainer.addEventListener('gesturestart', preventGesture, { passive: false });
-    mapContainer.addEventListener('gesturechange', preventGesture, { passive: false });
-    mapContainer.addEventListener('gestureend', preventGesture, { passive: false });
+    // Touch Events werden dynamisch verwaltet - nur bei gezoomtem Bild aktiv
+    updateTouchEventListeners();
 
     // Zoom-Controls sind immer sichtbar
+}
+
+function updateTouchEventListeners() {
+    const mapImage = document.getElementById('mapImage');
+    if (!mapImage) return;
+
+    // Alle Touch-Events vom Bild entfernen
+    mapImage.removeEventListener('touchstart', handleTouchStart);
+    mapImage.removeEventListener('touchmove', handleTouchMove);
+    mapImage.removeEventListener('touchend', handleTouchEnd);
+    mapImage.removeEventListener('gesturestart', preventGesture);
+    mapImage.removeEventListener('gesturechange', preventGesture);
+    mapImage.removeEventListener('gestureend', preventGesture);
+
+    if (mapScale > 1) {
+        // Nur bei gezoomtem Bild Touch-Events auf dem Bild registrieren
+        mapImage.addEventListener('touchstart', handleTouchStart, { passive: false });
+        mapImage.addEventListener('touchmove', handleTouchMove, { passive: false });
+        mapImage.addEventListener('touchend', handleTouchEnd, { passive: false });
+        mapImage.addEventListener('gesturestart', preventGesture, { passive: false });
+        mapImage.addEventListener('gesturechange', preventGesture, { passive: false });
+        mapImage.addEventListener('gestureend', preventGesture, { passive: false });
+
+        // Touch-Aktionen blockieren für Drag-Funktionalität
+        mapImage.style.touchAction = 'none';
+    } else {
+        // Touch-Aktionen erlauben für normales Scrolling
+        mapImage.style.touchAction = 'auto';
+    }
+    // Bei mapScale = 1: KEINE Touch-Events auf dem Bild - normales Scrolling möglich
 }
 
 function startDrag(e) {
@@ -637,12 +666,12 @@ function endDrag() {
 
 let lastTouchDistance = 0;
 
-function handleTouchStart(e) {
-    // Zoom-Buttons nicht blockieren - nur bei direkten Touches auf das mapImage
+// Container Touch-Handler - nur für Pinch-to-Zoom, erlaubt normales Scrolling
+function handleContainerTouchStart(e) {
+    // Zoom-Buttons nicht blockieren
     const target = e.target;
     if (target.closest('#mapZoomControls')) {
-        console.log('[Touch] Ignoring touch on zoom controls');
-        return; // Zoom-Controls nicht blockieren
+        return;
     }
 
     if (e.touches.length === 2) {
@@ -650,23 +679,13 @@ function handleTouchStart(e) {
         e.preventDefault();
         e.stopPropagation();
         lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
-    } else if (e.touches.length === 1) {
-        // Single touch für Dragging vorbereiten, aber nur verhindern wenn bereits gezoomt
-        const touch = e.touches[0];
-        lastPointerX = touch.clientX;
-        lastPointerY = touch.clientY;
-
-        // Nur preventDefault wenn die Karte bereits gezoomt ist (dann ist Dragging erwünscht)
-        if (mapScale > 1) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
     }
+    // Bei einem Finger: nichts tun - normales Scrolling erlauben
 }
 
-function handleTouchMove(e) {
+function handleContainerTouchMove(e) {
     if (e.touches.length === 2) {
-        // Pinch-to-zoom für Map - Browser-Zoom verhindern
+        // Pinch-to-zoom für Map
         e.preventDefault();
         e.stopPropagation();
 
@@ -677,8 +696,57 @@ function handleTouchMove(e) {
             zoomMap(scaleChange);
             lastTouchDistance = currentDistance;
         }
-    } else if (e.touches.length === 1 && mapScale > 1) {
-        // Single touch dragging nur wenn gezoomt - dann Scrolling verhindern
+    }
+    // Bei einem Finger: nichts tun - normales Scrolling erlauben
+}
+
+function handleContainerTouchEnd(e) {
+    // Zoom-Buttons nicht blockieren
+    const target = e.target;
+    if (target.closest('#mapZoomControls')) {
+        return;
+    }
+    // Bei Pinch-End: nichts tun - normales Touch-End erlauben
+}
+
+// Bild Touch-Handler - nur für gezoomte Bilder (mapScale > 1)
+function handleTouchStart(e) {
+    // Diese werden nur bei mapScale > 1 registriert
+    const target = e.target;
+    if (target.closest('#mapZoomControls')) {
+        return;
+    }
+
+    if (e.touches.length === 2) {
+        // Pinch-to-zoom
+        e.preventDefault();
+        e.stopPropagation();
+        lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+    } else if (e.touches.length === 1) {
+        // Single touch für Dragging
+        const touch = e.touches[0];
+        lastPointerX = touch.clientX;
+        lastPointerY = touch.clientY;
+        e.preventDefault();
+        e.stopPropagation();
+    }
+}
+
+function handleTouchMove(e) {
+    if (e.touches.length === 2) {
+        // Pinch-to-zoom
+        e.preventDefault();
+        e.stopPropagation();
+
+        const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        const scaleChange = currentDistance / lastTouchDistance;
+
+        if (Math.abs(scaleChange - 1) > 0.01) {
+            zoomMap(scaleChange);
+            lastTouchDistance = currentDistance;
+        }
+    } else if (e.touches.length === 1) {
+        // Single touch dragging
         e.preventDefault();
         e.stopPropagation();
 
@@ -689,25 +757,16 @@ function handleTouchMove(e) {
         mapTranslateX += deltaX;
         mapTranslateY += deltaY;
 
-        // Grenzen berechnen - verhindert Überschiebung
+        // Grenzen berechnen
         const mapImage = document.getElementById('mapImage');
         const mapContainer = mapImage?.parentElement;
         if (mapContainer) {
             const containerRect = mapContainer.getBoundingClientRect();
-
-            // Bei object-contain und padding müssen wir die tatsächliche Bildgröße berechnen
-            // Das Bild hat padding: 0.5rem (8px auf jeder Seite)
-            const padding = 16; // 8px * 2 (links+rechts bzw. oben+unten)
+            const padding = 16;
             const availableWidth = containerRect.width - padding;
             const availableHeight = containerRect.height - padding;
-
-            // Die tatsächliche Bildgröße wird durch object-contain bestimmt
-            // und entspricht der verfügbaren Container-Größe minus padding
             const imageDisplayWidth = availableWidth;
             const imageDisplayHeight = availableHeight;
-
-            // Mit translate() scale() - translate wird NICHT skaliert
-            // Maximale Verschiebung = (Bildgröße * (scale - 1)) / 2
             const maxTranslateX = Math.max(0, (imageDisplayWidth * (mapScale - 1)) / 2);
             const maxTranslateY = Math.max(0, (imageDisplayHeight * (mapScale - 1)) / 2);
 
@@ -716,35 +775,30 @@ function handleTouchMove(e) {
         }
 
         updateMapTransform();
-
         lastPointerX = touch.clientX;
         lastPointerY = touch.clientY;
     }
-    // Bei einem Finger und nicht gezoomter Karte: normales Scrollen erlauben (kein preventDefault)
 }
 
 function handleTouchEnd(e) {
-    // Zoom-Buttons nicht blockieren
     const target = e.target;
     if (target.closest('#mapZoomControls')) {
-        console.log('[Touch] Ignoring touch end on zoom controls');
-        return; // Zoom-Controls nicht blockieren
+        return;
     }
-
-    // Nur preventDefault wenn wir aktiv mit der Karte interagiert haben
-    if (e.changedTouches.length === 1 && mapScale > 1) {
-        // Nur verhindern wenn die Karte gezoomt ist (war wahrscheinlich Dragging)
-        e.preventDefault();
-        e.stopPropagation();
-    }
-    // Sonst normales Touch-End-Verhalten erlauben
+    // Bei gezoomtem Bild: Touch-End verhindern
+    e.preventDefault();
+    e.stopPropagation();
 }
 
 function preventGesture(e) {
-    // Verhindert alle Gesture-Events (iOS Safari)
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
+    // Verhindert Gesture-Events (iOS Safari) nur wenn das Bild gezoomt ist
+    // Bei nicht gezoomtem Bild soll normales Scrollen möglich sein
+    if (mapScale > 1) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+    // Bei mapScale = 1 erlauben wir normale Gestures/Scrolling
 }
 
 function getTouchDistance(touch1, touch2) {
@@ -759,7 +813,9 @@ function zoomMap(factor) {
     console.log(`[Zoom] New scale: ${newScale}`);
 
     if (newScale !== mapScale) {
+        const wasZoomed = mapScale > 1;
         mapScale = newScale;
+        const isNowZoomed = mapScale > 1;
 
         // Wenn auf Originalgröße zurückgezoomt wird, Position zentrieren
         if (mapScale <= 1) {
@@ -792,6 +848,11 @@ function zoomMap(factor) {
 
         updateMapTransform();
         updateMapCursor();
+
+        // Touch-Event-Listener aktualisieren wenn sich Zoom-Status ändert
+        if (wasZoomed !== isNowZoomed) {
+            updateTouchEventListeners();
+        }
 
         console.log(`[Zoom] Applied scale: ${mapScale}, Position: ${mapTranslateX}, ${mapTranslateY}`);
     } else {

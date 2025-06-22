@@ -806,7 +806,7 @@ button,
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  touch-action: none;
+  touch-action: auto;
   -webkit-user-drag: none;
   -moz-user-drag: none;
   user-drag: none;
