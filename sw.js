@@ -8,27 +8,28 @@ const API_CACHE = isDevelopment ? 'univent-api-dev' : 'univent-api-v4';
 // Assets die immer gecacht werden sollen
 const STATIC_ASSETS = [
     '/',
-    '/index.html',
-    '/js/app.js',
+    'index.html',
+    'js/app.js',
+    // CSS und Icons (lokal)
+    'assets/css/style.css',
+    'assets/icons/regular/style.css',
+    'assets/icons/fill/style.css',
     // Alle Bilder und Icons
-    '/assets/favicon.png',
-    '/assets/logo-uni.png',
-    '/assets/logo-infoday.png',
-    '/assets/floorplan.png',
-    // Externe CSS/Fonts
-    'https://cdn.tailwindcss.com',
-    'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap',
-    'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css',
-    'https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css'
+    'assets/favicon.png',
+    'assets/logo_uni_oldenburg_it_department_white.png',
+    'assets/logo_uni_oldenburg_it_department.png',
+    'assets/logo-infoday.png',
+    'assets/floorplan.png',
+    'assets/background_gradient.svg'
 ];
 
 // API-Endpunkte die gecacht werden sollen
 const API_ENDPOINTS = [
-    '/data/events.json',
-    '/data/theme.json',
-    '/data/i18n/de.json',
-    '/data/i18n/en.json',
-    '/data/i18n/fr.json'
+    'data/events.json',
+    'data/theme.json',
+    'data/i18n/de.json',
+    'data/stations.json',
+    'data/legend.json'
 ];
 
 // Service Worker Installation
@@ -125,7 +126,7 @@ self.addEventListener('install', event => {
         ]).then(async () => {
             // Prüfen ob kritische Assets gecacht wurden
             const cache = await caches.open(STATIC_CACHE);
-            const criticalAssets = ['/assets/floorplan.png', '/assets/logo_uni_oldenburg_it_department.png', '/assets/favicon.png'];
+            const criticalAssets = ['assets/floorplan.png', 'assets/logo_uni_oldenburg_it_department.png', 'assets/favicon.png'];
 
             for (const asset of criticalAssets) {
                 const cached = await cache.match(asset);
@@ -215,7 +216,7 @@ function isStaticAsset(url) {
 
 // Prüfen ob API-Request
 function isApiRequest(url) {
-    return url.includes('/data/') || API_ENDPOINTS.some(endpoint => url.includes(endpoint));
+    return url.includes('data/') || API_ENDPOINTS.some(endpoint => url.includes(endpoint));
 }
 
 // Prüfen ob Navigation-Request
@@ -298,7 +299,7 @@ async function handleApiRequest(request) {
         }
 
         // Fallback für fehlende Übersetzungen
-        if (request.url.includes('/data/i18n/')) {
+        if (request.url.includes('data/i18n/')) {
             return new Response('{}', {
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -315,7 +316,7 @@ async function handleNavigation(request) {
         return networkResponse;
     } catch (error) {
         console.log('[SW] Navigation failed, serving cached index.html');
-        const cachedResponse = await caches.match('/index.html') || await caches.match('/');
+        const cachedResponse = await caches.match('index.html') || await caches.match('/');
         return cachedResponse || new Response('App offline', { status: 503 });
     }
 }

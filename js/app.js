@@ -401,7 +401,7 @@ function renderMap() {
                         <div class="text-lg mono">Lageplan</div>
                         <div class="text-sm mono text-gray-600">A14 Hörsaalzentrum</div>
                     </div>
-                    <img id="mapImage" src="/assets/floorplan.png" alt="Gebäudeplan" 
+                    <img id="mapImage" src="assets/floorplan.png" alt="Gebäudeplan" 
                          class="w-full h-full object-contain cursor-grab transition-transform duration-200 p-2"
                          style="transform: scale(1) translate(0px, 0px);">
                     <div id="mapZoomControls" class="absolute bottom-2 right-2 flex flex-col z-20">
