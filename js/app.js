@@ -467,11 +467,11 @@ function renderInfo() {
                 </div>
 
                 <div class="ui-element p-4 rounded-lg">
-                    <h3 class="mono text-lg mb-3">NETWORK</h3>
+                    <h3 class="mono text-lg mb-3">NETZWERK</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.wifiInfo || 'SSID: UniOL-Guest'}</p>
                 </div>
                 <div class="ui-element p-4 rounded-lg">
-                    <h3 class="mono text-lg mb-3">EMERGENCY</h3>
+                    <h3 class="mono text-lg mb-3">NOTFALL</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.emergencyInfo || 'CALL: 0441-798-0'}</p>
                 </div>
             </div>
