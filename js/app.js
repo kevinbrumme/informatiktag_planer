@@ -400,11 +400,11 @@ function renderMap() {
                         <div class="text-lg mono">Lageplan</div>
                         <div class="text-sm mono text-gray-600">A14 Hörsaalzentrum</div>
                     </div>
-                    <img id="mapImage" src="assets/floorplan.png" alt="Gebäudeplan" 
-                         class="w-full h-full object-contain cursor-grab transition-transform duration-200 p-2"
+                                    <img id="mapImage" src="assets/floorplan.png" alt="Gebäudeplan"
+                     class="w-full h-full object-contain cursor-grab p-2"
                          style="transform: scale(1) translate(0px, 0px);">
                     <div id="mapZoomControls" class="absolute bottom-2 right-2 flex flex-col z-20">
-                        <button onclick="zoomMap(1.2)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
+                        <button onclick="zoomMap(1.25)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
                         <button onclick="zoomMap(0.8)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-b-md rounded-t-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61;">−</button>
                     </div>
                 </div>
@@ -624,27 +624,31 @@ function endDrag() {
 let lastTouchDistance = 0;
 
 function handleTouchStart(e) {
-    // Verhindert Browser-Zoom bei allen Touch-Events auf der Map
-    e.preventDefault();
-    e.stopPropagation();
-
     if (e.touches.length === 2) {
+        // Nur bei Pinch-Zoom (zwei Finger) Browser-Zoom verhindern
+        e.preventDefault();
+        e.stopPropagation();
         lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
     } else if (e.touches.length === 1) {
-        // Single touch für Dragging vorbereiten
+        // Single touch für Dragging vorbereiten, aber nur verhindern wenn bereits gezoomt
         const touch = e.touches[0];
         lastPointerX = touch.clientX;
         lastPointerY = touch.clientY;
+
+        // Nur preventDefault wenn die Karte bereits gezoomt ist (dann ist Dragging erwünscht)
+        if (mapScale > 1) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
     }
 }
 
 function handleTouchMove(e) {
-    // Verhindert Browser-Zoom und Scrolling bei allen Touch-Events auf der Map
-    e.preventDefault();
-    e.stopPropagation();
-
     if (e.touches.length === 2) {
-        // Pinch-to-zoom für Map
+        // Pinch-to-zoom für Map - Browser-Zoom verhindern
+        e.preventDefault();
+        e.stopPropagation();
+
         const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
         const scaleChange = currentDistance / lastTouchDistance;
 
@@ -653,7 +657,10 @@ function handleTouchMove(e) {
             lastTouchDistance = currentDistance;
         }
     } else if (e.touches.length === 1 && mapScale > 1) {
-        // Single touch dragging wenn gezoomt
+        // Single touch dragging nur wenn gezoomt - dann Scrolling verhindern
+        e.preventDefault();
+        e.stopPropagation();
+
         const touch = e.touches[0];
         const deltaX = touch.clientX - lastPointerX;
         const deltaY = touch.clientY - lastPointerY;
@@ -678,12 +685,17 @@ function handleTouchMove(e) {
         lastPointerX = touch.clientX;
         lastPointerY = touch.clientY;
     }
+    // Bei einem Finger und nicht gezoomter Karte: normales Scrollen erlauben (kein preventDefault)
 }
 
 function handleTouchEnd(e) {
-    // Verhindert Browser-Zoom auch bei Touch-End
-    e.preventDefault();
-    e.stopPropagation();
+    // Nur preventDefault wenn wir aktiv mit der Karte interagiert haben
+    if (e.changedTouches.length === 1 && mapScale > 1) {
+        // Nur verhindern wenn die Karte gezoomt ist (war wahrscheinlich Dragging)
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    // Sonst normales Touch-End-Verhalten erlauben
 }
 
 function preventGesture(e) {
@@ -700,12 +712,12 @@ function getTouchDistance(touch1, touch2) {
 }
 
 function zoomMap(factor) {
-    const newScale = Math.max(1, Math.min(5, mapScale * factor));
+    const newScale = Math.max(0.5, Math.min(8, mapScale * factor));
 
     if (newScale !== mapScale) {
         mapScale = newScale;
 
-        // Wenn rausgezoomt wird, Position zentrieren
+        // Wenn auf Originalgröße oder kleiner gezoomt wird, Position zentrieren
         if (mapScale <= 1) {
             mapTranslateX = 0;
             mapTranslateY = 0;

@@ -1,18 +1,5 @@
 @import "tailwindcss";
 
-/* Touch-Verhalten kontrollieren - nur Touch-Zoom verhindern */
-html {
-    /* Verhindert Doppeltap-Zoom und Touch-Zoom, aber erlaubt Browser-Zoom */
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-}
-
-/* Tap-Highlights und Touch-Callouts entfernen */
-* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-}
-
 /* Text-Selektion kontrolliert erlauben */
 p,
 h1,
