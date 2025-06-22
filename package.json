@@ -3,13 +3,18 @@
     "version": "1.0.0",
     "main": "index.html",
     "scripts": {
-        "start": "npx http-server -p 3000 -c-1",
-        "serve": "npx http-server -p 3000 -c-1",
-        "dev": "npx http-server -p 3000 -c-1 -o"
+        "build-css": "npx tailwindcss -i dev/tailwind.css -o assets/css/style.css",
+        "build-css:watch": "npx tailwindcss -i dev/tailwind.css -o assets/css/style.css --watch",
+        "start": "npx http-server -p 3001 -c-1",
+        "serve": "npx http-server -p 3001 -c-1",
+        "dev": "npm run build-css && npx http-server -p 3001 -c-1 -o",
+        "dev:watch": "npx tailwindcss -i dev/tailwind.css -o assets/css/style.css --watch & npx http-server -p 3001 -c-1 -o"
     },
     "license": "MIT",
     "devDependencies": {
-        "http-server": "^14.1.1"
+        "@tailwindcss/cli": "^4.1.10",
+        "http-server": "^14.1.1",
+        "tailwindcss": "^4.1.10"
     },
     "dependencies": {
         "@phosphor-icons/web": "^2.1.2"
