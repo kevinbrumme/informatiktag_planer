@@ -20,7 +20,19 @@ const STATIC_ASSETS = [
     'assets/logo_uni_oldenburg_it_department.png',
     'assets/logo-infoday.png',
     'assets/floorplan.png',
-    'assets/background_gradient.svg'
+    'assets/background_gradient.svg',
+    // Lokale Fonts
+    'assets/fonts/JetBrainsMono-Regular.ttf',
+    'assets/fonts/JetBrainsMono-Bold.ttf',
+    'assets/fonts/NotoSans-Regular.ttf',
+    'assets/fonts/NotoSans-Bold.ttf',
+    // Icon Fonts
+    'assets/icons/regular/Phosphor.woff2',
+    'assets/icons/regular/Phosphor.woff',
+    'assets/icons/regular/Phosphor.ttf',
+    'assets/icons/fill/Phosphor-Fill.woff2',
+    'assets/icons/fill/Phosphor-Fill.woff',
+    'assets/icons/fill/Phosphor-Fill.ttf'
 ];
 
 // API-Endpunkte die gecacht werden sollen
@@ -42,9 +54,8 @@ self.addEventListener('install', event => {
             caches.open(STATIC_CACHE).then(async cache => {
                 console.log('[SW] Caching static assets');
 
-                // Assets einzeln cachen für bessere Fehlerbehandlung
-                const localAssets = STATIC_ASSETS.filter(url => !url.includes('http'));
-                const externalAssets = STATIC_ASSETS.filter(url => url.includes('http') && !url.includes('fonts.googleapis.com'));
+                // Alle Assets sind jetzt lokal - keine externen Assets mehr
+                const localAssets = STATIC_ASSETS;
 
                 // Lokale Assets (kritisch - müssen funktionieren)
                 for (const asset of localAssets) {
@@ -61,47 +72,9 @@ self.addEventListener('install', event => {
                     }
                 }
 
-                // Externe Assets (optional)
-                for (const asset of externalAssets) {
-                    try {
-                        const response = await fetch(asset);
-                        if (response.ok) {
-                            await cache.put(asset, response);
-                            console.log('[SW] Cached external asset:', asset);
-                        }
-                    } catch (err) {
-                        console.log('[SW] Failed to cache external asset:', asset, err);
-                    }
-                }
+                // Keine externen Assets mehr - alles ist lokal
 
-                // Google Fonts CSS laden und Font-URLs extrahieren
-                try {
-                    const fontResponse = await fetch('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
-                    if (fontResponse.ok) {
-                        const fontCSS = await fontResponse.text();
-                        await cache.put('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap', new Response(fontCSS, {
-                            headers: { 'Content-Type': 'text/css' }
-                        }));
-
-                        // Font-Dateien aus CSS extrahieren und cachen
-                        const fontUrls = fontCSS.match(/https:\/\/fonts\.gstatic\.com\/[^)]+/g) || [];
-                        await Promise.allSettled(
-                            fontUrls.map(async fontUrl => {
-                                try {
-                                    const response = await fetch(fontUrl);
-                                    if (response.ok) {
-                                        await cache.put(fontUrl, response);
-                                        console.log('[SW] Cached font:', fontUrl);
-                                    }
-                                } catch (err) {
-                                    console.log('[SW] Failed to cache font:', fontUrl, err);
-                                }
-                            })
-                        );
-                    }
-                } catch (err) {
-                    console.log('[SW] Failed to process Google Fonts:', err);
-                }
+                // Lokale Fonts werden über CSS automatisch geladen - keine externe Font-Verarbeitung nötig
 
                 return cache;
             }),
@@ -206,12 +179,7 @@ function isStaticAsset(url) {
         url.includes('.js') ||
         url.includes('.woff') ||
         url.includes('.woff2') ||
-        url.includes('.ttf') ||
-        url.includes('tailwindcss.com') ||
-        url.includes('fonts.googleapis.com') ||
-        url.includes('fonts.gstatic.com') ||
-        url.includes('phosphor-icons') ||
-        url.includes('jsdelivr.net');
+        url.includes('.ttf');
 }
 
 // Prüfen ob API-Request
