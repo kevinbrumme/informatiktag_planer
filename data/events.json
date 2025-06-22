@@ -1,79 +1,125 @@
 [
     {
-        "id": "evt-01",
         "start": "08:30",
         "end": "09:00",
         "title": "Ankommen",
-        "location": "A14 Foyer",
+        "location": "Ort: A14 - Foyer",
         "description": "Herzlich Willkommen, wir freuen uns, euch am Informatiktag 2025 begrüßen zu dürfen. Nutzt die Zeit um euch über das Tagesprogramm zu informieren und schaut euch um."
     },
     {
-        "id": "evt-02",
         "start": "09:00",
         "end": "09:15",
         "title": "Begrüßung",
-        "location": "A14-HS1",
+        "location": "Veranstaltungsort: A14 - Hörsaal 1",
         "description": "Offizielle Eröffnung des Informatiktags."
     },
     {
-        "id": "evt-03",
         "start": "09:15",
         "end": "09:45",
         "title": "Wie Roboter klüger, Maschinen selbstständiger und Energieverbrauch nachhaltiger wird",
-        "location": "A14-HS1",
+        "location": "Veranstaltungsort: A14 - Hörsaal 1",
         "description": "Einblick in aktuelle Forschung zu intelligenten Systemen, autonomen Maschinen und nachhaltigen Energielösungen in der Informatik.",
         "category": "keynote"
     },
     {
-        "id": "evt-04",
         "start": "09:45",
         "end": "12:00",
-        "title": "Stationen, Uni-Führung, Miniworkshops",
-        "location": "A14 Foyer, A03-0-00(1-3)",
-        "description": "Praktische Einblicke an verschiedenen Stationen, geführte Touren durch die Universität und interaktive Miniworkshops zu verschiedenen Informatikthemen."
+        "title": "Stationen",
+        "location": "Ort: A14 - Foyer",
+        "description": "Praktische Einblicke an verschiedenen Stände zu verschiedenen Informatikthemen. Siehe die einzelnen Stationen auf der Karte an unter Stationen."
     },
     {
-        "id": "evt-05",
+        "start": "10:00",
+        "end": "10:30",
+        "title": "Führung XXX",
+        "location": "Treffpunkt: An der Information",
+        "description": "Infotext XXX",
+        "category": "Führung"
+    },
+    {
+        "start": "10:00",
+        "end": "10:30",
+        "title": "Workshop XXX",
+        "location": "Treffpunkt: Startpunkt Workshops",
+        "description": "Infotext XXX",
+        "category": "Workshop"
+    },
+    {
+        "start": "10:15",
+        "end": "10:45",
+        "title": "Workshop XXX",
+        "location": "Treffpunkt: Startpunkt Workshops",
+        "description": "Infotext XXX",
+        "category": "Workshop"
+    },
+    {
+        "start": "10:35",
+        "end": "11:05",
+        "title": "Führung XXX",
+        "location": "Treffpunkt: An der Information",
+        "description": "Infotext XXX",
+        "category": "Führung"
+    },
+    {
+        "start": "11:00",
+        "end": "11:45",
+        "title": "Workshop XXX",
+        "location": "Treffpunkt: Startpunkt Workshops",
+        "description": "Infotext XXX",
+        "category": "Workshop"
+    },
+    {
+        "start": "11:15",
+        "end": "11:45",
+        "title": "Führung XXX",
+        "location": "Treffpunkt: An der Information",
+        "description": "Infotext XXX",
+        "category": "Führung"
+    },
+    {
         "start": "12:00",
         "end": "12:10",
         "title": "Ankündigung Kahoot und Tombola",
-        "location": "A14-HS2",
+        "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Vorstellung des interaktiven Quiz-Spiels und der Tombola-Verlosung. Informationen zu Teilnahme und Preisen.",
         "category": "quiz"
     },
     {
-        "id": "evt-06",
         "start": "12:10",
         "end": "12:20",
         "title": "Vorstellung Bachelorstudiengänge",
-        "location": "A14-HS2",
+        "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Detaillierte Informationen zu den Bachelor-Studiengängen Informatik, Wirtschaftsinformatik und den Studienaufbau.",
         "category": "keynote"
     },
     {
-        "id": "evt-08",
+        "start": "12:20",
+        "end": "12:30",
+        "title": "Quiz",
+        "location": "Veranstaltungsort: A14 - Hörsaal 2",
+        "description": "",
+        "category": "quiz"
+    },
+    {
         "start": "12:30",
         "end": "12:40",
         "title": "Vorstellung Masterstudiengänge",
-        "location": "A14-HS2",
+        "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Informationen zu den Master-Studiengängen, Spezialisierungsmöglichkeiten und Forschungsschwerpunkten.",
         "category": "keynote"
     },
     {
-        "id": "evt-09",
         "start": "12:40",
         "end": "12:50",
-        "title": "QUIZ",
-        "location": "A14-HS2",
-        "description": "Unterhaltsames Programm und Präsentationen von Studierenden und Fakultätsmitgliedern.",
-        "category": "quiz"
+        "title": "Bühnenprogramm",
+        "location": "Veranstaltungsort: A14 - Hörsaal 2",
+        "description": "Unterhaltsames Programm und Präsentationen von Studierenden und Fakultätsmitgliedern."
     },
     {
-        "id": "evt-10",
         "start": "12:50",
         "end": "13:05",
         "title": "Abschluss",
-        "location": "A14-HS2",
+        "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Abschließende Worte, Tombola-Verlosung und Verabschiedung. Gelegenheit für letzte Fragen und Kontakte."
     }
 ]

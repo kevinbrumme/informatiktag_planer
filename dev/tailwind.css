@@ -40,6 +40,22 @@ button,
     user-select: none;
 }
 
+/* Map-Container: Verhindert Browser-Zoom und Scrolling */
+#mapImage,
+#mapImage img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Verhindert Touch-Zoom komplett */
+    touch-action: none;
+    /* Verhindert Drag-and-Drop */
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    user-drag: none;
+}
+
 /* Lokale Font-Definitionen */
 @font-face {
     font-family: 'JetBrains Mono';
@@ -132,6 +148,12 @@ body::before {
 .header-container {
     background-color: #003c61;
     backdrop-filter: blur(10px);
+}
+
+/* Header Bottom - nur untere Ecken abrunden */
+#headerBottom {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 /* Header Text weiß */
@@ -241,10 +263,7 @@ textarea:focus {
     border: var(--border-width) solid var(--color-border);
 }
 
-/* Custom text styling */
-.text-lg {
-    line-height: 1.5rem !important;
-}
+/* Custom text styling entfernt - Standard Tailwind line-height verwenden */
 
 /* Utility classes */
 .border-tech {
@@ -325,7 +344,7 @@ textarea:focus {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 8px 12px;
+    padding: 5px 12px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
     font-weight: 600;
@@ -337,16 +356,7 @@ textarea:focus {
     border-top-right-radius: 12px;
 }
 
-/* Event type specific colors - basierend auf aktuellen Events */
-.event-type-keynote {
-    background-color: #FF6B6B;
-    color: white;
-}
-
-.event-type-quiz {
-    background-color: #4ECDC4;
-    color: white;
-}
+/* Event type colors werden jetzt dynamisch per JavaScript gesetzt */
 
 /* Separator line */
 .event-separator {
@@ -456,10 +466,6 @@ textarea:focus {
 
 /* Mobile optimizations */
 @media (max-width: 640px) {
-    .text-lg {
-        font-size: 1rem;
-        line-height: 1.4rem;
-    }
 
     h1,
     h2,

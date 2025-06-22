@@ -437,6 +437,9 @@
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
+  .py-3 {
+    padding-block: calc(var(--spacing) * 3);
+  }
   .pt-1 {
     padding-top: calc(var(--spacing) * 1);
   }
@@ -595,6 +598,17 @@ button, .nav-item, .btn-primary, .btn-secondary {
   -ms-user-select: none;
   user-select: none;
 }
+#mapImage, #mapImage img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  user-drag: none;
+}
 @font-face {
   font-family: 'JetBrains Mono';
   src: url('../fonts/JetBrainsMono-Regular.ttf') format('truetype');
@@ -665,6 +679,10 @@ body::before {
 .header-container {
   background-color: #003c61;
   backdrop-filter: blur(10px);
+}
+#headerBottom {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 .header-container h1, .header-container #headerTitle {
   color: white;
@@ -745,9 +763,6 @@ input:focus, select:focus, textarea:focus {
   color: white;
   border: var(--border-width) solid var(--color-border);
 }
-.text-lg {
-  line-height: 1.5rem !important;
-}
 .border-tech {
   border: var(--border-width) solid var(--color-border);
 }
@@ -808,7 +823,7 @@ input:focus, select:focus, textarea:focus {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 8px 12px;
+  padding: 5px 12px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
   font-weight: 600;
@@ -818,14 +833,6 @@ input:focus, select:focus, textarea:focus {
   border-bottom: var(--border-width) solid var(--color-border);
   border-bottom-left-radius: 8px;
   border-top-right-radius: 12px;
-}
-.event-type-keynote {
-  background-color: #FF6B6B;
-  color: white;
-}
-.event-type-quiz {
-  background-color: #4ECDC4;
-  color: white;
 }
 .event-separator {
   height: 1px;
@@ -906,10 +913,6 @@ input:focus, select:focus, textarea:focus {
   pointer-events: none;
 }
 @media (max-width: 640px) {
-  .text-lg {
-    font-size: 1rem;
-    line-height: 1.4rem;
-  }
   h1, h2, h3 {
     font-size: 1.25rem;
     line-height: 1.5rem;

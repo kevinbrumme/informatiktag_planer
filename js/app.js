@@ -328,6 +328,18 @@ function showSection(section) {
     }, 100);
 }
 
+// Kategorie-Farben definieren (mit 20% Opacity)
+function getCategoryColor(category) {
+    const categoryColors = {
+        'keynote': 'rgba(0, 170, 217, 0.2)',     // Blau mit 20% Opacity
+        'Workshop': 'rgba(201, 212, 0, 0.2)',    // Grün mit 20% Opacity
+        'Führung': 'rgba(242, 145, 0, 0.2)',     // Orange mit 20% Opacity
+        'quiz': 'rgba(212, 57, 11, 0.2)'         // Rot mit 20% Opacity
+    };
+
+    return categoryColors[category] || 'rgba(102, 102, 102, 0.2)'; // Fallback Grau mit 20% Opacity
+}
+
 // Agenda-Ansicht rendern
 function renderAgenda() {
     return `
@@ -336,12 +348,13 @@ function renderAgenda() {
                 ${events.map(event => {
         // Kategorie direkt verwenden (keine Übersetzung)
         const categoryText = event.category ? event.category.toUpperCase() : '';
+        const categoryColor = event.category ? getCategoryColor(event.category) : '';
 
         return `
                     <div class="event-card pt-2 pb-0 relative">
                         <!-- Event Type Badge rechts oben (nur wenn Kategorie vorhanden) -->
                         ${categoryText && event.category ? `
-                            <span class="event-type-badge event-type-${event.category}">
+                            <span class="event-type-badge" style="background-color: ${categoryColor}; color: #003c61;">
                                 ${categoryText}
                             </span>
                         ` : ''}
@@ -357,7 +370,7 @@ function renderAgenda() {
                         <h3 class="mono text-lg px-4">${event.title}</h3>
                         
                         <!-- Beschreibung -->
-                        <p class="text-sm mb-3 px-4">${event.description}</p>
+                        <p class="text-sm mb-3 px-4 mt-1">${event.description}</p>
                         
                         <!-- Referent (falls vorhanden) -->
                         ${event.speaker ? `<p class="text-xs mono mb-3 px-4">REFERENT: ${event.speaker}</p>` : ''}
@@ -367,8 +380,8 @@ function renderAgenda() {
                         
                         <!-- Ort-Badge unten -->
                         <div class="px-4 pb-2">
-                                                            <span class="location-badge text-xs">
-                                Raum/Ort: ${event.location}
+                            <span class="location-badge text-xs">
+                                ${event.location}
                             </span>
                         </div>
                     </div>
@@ -559,9 +572,15 @@ function initializeMapInteraction() {
     document.addEventListener('pointermove', drag);
     document.addEventListener('pointerup', endDrag);
 
-    // Touch Zoom (Pinch)
+    // Touch Zoom (Pinch) - aber verhindert Browser-Zoom
     mapContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
     mapContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+    mapContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+    // Verhindert alle Touch-Gesten die zu Browser-Zoom führen könnten
+    mapContainer.addEventListener('gesturestart', preventGesture, { passive: false });
+    mapContainer.addEventListener('gesturechange', preventGesture, { passive: false });
+    mapContainer.addEventListener('gestureend', preventGesture, { passive: false });
 
     // Zoom-Controls sind immer sichtbar
 }
@@ -619,15 +638,27 @@ function endDrag() {
 let lastTouchDistance = 0;
 
 function handleTouchStart(e) {
+    // Verhindert Browser-Zoom bei allen Touch-Events auf der Map
+    e.preventDefault();
+    e.stopPropagation();
+
     if (e.touches.length === 2) {
         lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
-        e.preventDefault();
+    } else if (e.touches.length === 1) {
+        // Single touch für Dragging vorbereiten
+        const touch = e.touches[0];
+        lastPointerX = touch.clientX;
+        lastPointerY = touch.clientY;
     }
 }
 
 function handleTouchMove(e) {
+    // Verhindert Browser-Zoom und Scrolling bei allen Touch-Events auf der Map
+    e.preventDefault();
+    e.stopPropagation();
+
     if (e.touches.length === 2) {
-        e.preventDefault();
+        // Pinch-to-zoom für Map
         const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
         const scaleChange = currentDistance / lastTouchDistance;
 
@@ -635,7 +666,45 @@ function handleTouchMove(e) {
             zoomMap(scaleChange);
             lastTouchDistance = currentDistance;
         }
+    } else if (e.touches.length === 1 && mapScale > 1) {
+        // Single touch dragging wenn gezoomt
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - lastPointerX;
+        const deltaY = touch.clientY - lastPointerY;
+
+        mapTranslateX += deltaX;
+        mapTranslateY += deltaY;
+
+        // Grenzen berechnen
+        const mapImage = document.getElementById('mapImage');
+        const mapContainer = mapImage?.parentElement;
+        if (mapContainer) {
+            const containerRect = mapContainer.getBoundingClientRect();
+            const maxTranslateX = (containerRect.width * (mapScale - 1)) / 2;
+            const maxTranslateY = (containerRect.height * (mapScale - 1)) / 2;
+
+            mapTranslateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, mapTranslateX));
+            mapTranslateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, mapTranslateY));
+        }
+
+        updateMapTransform();
+
+        lastPointerX = touch.clientX;
+        lastPointerY = touch.clientY;
     }
+}
+
+function handleTouchEnd(e) {
+    // Verhindert Browser-Zoom auch bei Touch-End
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function preventGesture(e) {
+    // Verhindert alle Gesture-Events (iOS Safari)
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
 }
 
 function getTouchDistance(touch1, touch2) {
