@@ -272,12 +272,10 @@ function updateLanguage() {
     // Navigation aktualisieren
     const navAgenda = document.querySelector('#nav-agenda span');
     const navMap = document.querySelector('#nav-map span');
-    const navFavorites = document.querySelector('#nav-favorites span');
     const navInfo = document.querySelector('#nav-info span');
 
     if (navAgenda) navAgenda.textContent = (translations.agenda || 'AGENDA').toUpperCase();
     if (navMap) navMap.textContent = (translations.map || 'PLAN').toUpperCase();
-    if (navFavorites) navFavorites.textContent = (translations.favorites || 'GEMERKT').toUpperCase();
     if (navInfo) navInfo.textContent = 'INFO';
 
     // Seiten-Titel aktualisieren
@@ -313,9 +311,7 @@ function showSection(section) {
                 // Map-Interaktion nach dem Rendern initialisieren
                 setTimeout(() => initializeMapInteraction(), 100);
                 break;
-            case 'favorites':
-                mainContent.innerHTML = renderFavorites();
-                break;
+
             case 'info':
                 mainContent.innerHTML = renderInfo();
                 break;
@@ -331,7 +327,7 @@ function showSection(section) {
 // Kategorie-Farben definieren (mit 20% Opacity)
 function getCategoryColor(category) {
     const categoryColors = {
-        'keynote': 'rgba(0, 170, 217, 0.2)',     // Blau mit 20% Opacity
+        'Vorlesung': 'rgba(0, 170, 217, 0.2)',   // Blau mit 20% Opacity
         'Workshop': 'rgba(201, 212, 0, 0.2)',    // Grün mit 20% Opacity
         'Führung': 'rgba(242, 145, 0, 0.2)',     // Orange mit 20% Opacity
         'quiz': 'rgba(212, 57, 11, 0.2)'         // Rot mit 20% Opacity
@@ -360,7 +356,7 @@ function renderAgenda() {
                         ` : ''}
                         
                         <!-- Zeit-Badge links oben -->
-                        <div class="mb-1 px-4">
+                        <div class="mb-2 px-4">
                             <span class="time-badge text-xs">
                                 ${event.start} - ${event.end} ${translations.clock}
                             </span>
@@ -443,17 +439,7 @@ function renderMap() {
     `;
 }
 
-// Merken-Ansicht rendern
-function renderFavorites() {
-    return `
-        <div>
-            <div class="ui-element p-4 rounded-lg">
-                <p class="mono text-sm mb-2">${translations.noFavorites || 'NOCH NICHTS GEMERKT'}</p>
-                <p class="text-sm">Merken-Funktionalität wird implementiert...</p>
-            </div>
-        </div>
-    `;
-}
+
 
 // Info-Ansicht rendern
 function renderInfo() {

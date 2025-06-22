@@ -19,14 +19,14 @@
         "title": "Wie Roboter klüger, Maschinen selbstständiger und Energieverbrauch nachhaltiger wird",
         "location": "Veranstaltungsort: A14 - Hörsaal 1",
         "description": "Einblick in aktuelle Forschung zu intelligenten Systemen, autonomen Maschinen und nachhaltigen Energielösungen in der Informatik.",
-        "category": "keynote"
+        "category": "Vorlesung"
     },
     {
         "start": "09:45",
         "end": "12:00",
-        "title": "Stationen",
+        "title": "Stände",
         "location": "Ort: A14 - Foyer",
-        "description": "Praktische Einblicke an verschiedenen Stände zu verschiedenen Informatikthemen. Siehe die einzelnen Stationen auf der Karte an unter Stationen."
+        "description": "An den Ständen findest du Einblicke in verschiedene Informatikthemen. Eine Übersicht der einzelnen Stationen findest du in der Karte."
     },
     {
         "start": "10:00",
@@ -87,10 +87,10 @@
     {
         "start": "12:10",
         "end": "12:20",
-        "title": "Vorstellung Bachelorstudiengänge",
+        "title": "Bachelorstudiengänge",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Detaillierte Informationen zu den Bachelor-Studiengängen Informatik, Wirtschaftsinformatik und den Studienaufbau.",
-        "category": "keynote"
+        "category": "Vorlesung"
     },
     {
         "start": "12:20",
@@ -103,10 +103,10 @@
     {
         "start": "12:30",
         "end": "12:40",
-        "title": "Vorstellung Masterstudiengänge",
+        "title": "Masterstudiengänge",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Informationen zu den Master-Studiengängen, Spezialisierungsmöglichkeiten und Forschungsschwerpunkten.",
-        "category": "keynote"
+        "category": "Vorlesung"
     },
     {
         "start": "12:40",
