@@ -445,19 +445,15 @@ function renderInfo() {
                 <div class="ui-element shadow-tech p-4 rounded-lg">
                     <h3 class="mono text-lg mb-3">STUDIUM INFORMATIK</h3>
                     <p class="text-sm mb-3">Das Studium der Informatik an der Uni Oldenburg ist ein wissenschaftliches Studium, d.h. es qualifiziert Absolvent*innen selbstständig und mit wissenschaftlichen Methoden neuartige Fragestellungen im Bereich der Informatik und ihrer Anwendungen zu untersuchen und zu lösen.</p>
-                    <a href="https://www.informatik-uni-oldenburg.de/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-sm text-white rounded-md hover:opacity-90 transition-opacity" style="background-color: #004e98;">
+                    <a href="https://www.informatik-uni-oldenburg.de/" target="_blank" rel="noopener noreferrer" class="link-button inline-flex items-center gap-2 px-4 py-2 text-sm text-white rounded-md" style="background-color: #004e98;">
                         Für mehr Informationen zum Studium
                         <i class="ph ph-arrow-square-out text-base"></i>
                     </a>
                 </div>
 
                 <div class="ui-element shadow-tech p-4 rounded-lg">
-                    <h3 class="mono text-lg mb-3">NETZWERK</h3>
+                    <h3 class="mono text-lg mb-3">W-LAN</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.wifiInfo || 'SSID: UniOL-Guest'}</p>
-                </div>
-                <div class="ui-element shadow-tech p-4 rounded-lg">
-                    <h3 class="mono text-lg mb-3">NOTFALL</h3>
-                    <p class="text-sm terminal p-2 inline-block">${translations.emergencyInfo || 'CALL: 0441-798-0'}</p>
                 </div>
             </div>
         </div>

@@ -53,7 +53,7 @@
 
     <!-- Bottom Navigation -->
     <nav
-        class="fixed bottom-2 left-1/2 transform -translate-x-1/2 bg-white/60 menu-backdrop z-50 rounded-full border-tech shadow-tech overflow-hidden">
+        class="fixed bottom-nav-safe left-1/2 transform -translate-x-1/2 bg-white/50 menu-backdrop z-50 rounded-full border-tech shadow-tech overflow-hidden">
         <div class="flex justify-center py-1 px-8 gap-6 relative">
             <!-- Animierte Linie -->
             <div id="nav-indicator" class="nav-indicator"></div>
@@ -80,7 +80,7 @@
 
     <!-- Update Notification -->
     <div id="updateNotification"
-        class="fixed bottom-4 left-4 right-4 bg-tech border-tech-thick p-4 rounded-none hidden z-40">
+        class="fixed update-notification-safe left-4 right-4 bg-tech border-tech-thick p-4 rounded-none hidden z-60">
         <p class="text-sm font-medium mono">UPDATE VERFÜGBAR</p>
         <p class="text-xs mb-2">Eine neue Version der App ist verfügbar</p>
         <button onclick="reloadApp()" class="btn-primary px-4 py-2 text-xs mr-2">AKTUALISIEREN</button>

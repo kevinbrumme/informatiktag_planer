@@ -194,6 +194,37 @@ body::before {
     /* JavaScript wird left und transform setzen */
 }
 
+/* Safe Area Support für Bottom Navigation */
+nav {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Bottom Navigation mit Safe Area Support */
+.bottom-nav-safe {
+    bottom: calc(0.5rem + env(safe-area-inset-bottom));
+    transition: bottom 0.3s ease;
+}
+
+/* Fallback für ältere Browser ohne safe-area-inset Unterstützung */
+@supports not (bottom: env(safe-area-inset-bottom)) {
+    .bottom-nav-safe {
+        bottom: 0.5rem;
+    }
+}
+
+/* Update Notification mit Safe Area Support */
+.update-notification-safe {
+    bottom: calc(5rem + env(safe-area-inset-bottom));
+    transition: bottom 0.3s ease;
+}
+
+/* Fallback für Update Notification */
+@supports not (bottom: env(safe-area-inset-bottom)) {
+    .update-notification-safe {
+        bottom: 5rem;
+    }
+}
+
 /* Event Cards */
 .event-card {
     background-color: rgba(255, 255, 255, 0.95);
@@ -309,7 +340,7 @@ textarea:focus {
 
 /* Map container */
 .map-container {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: #ffffff;
     border: var(--border-width) solid var(--color-border);
 }
 
@@ -468,6 +499,20 @@ textarea:focus {
 .loading {
     opacity: 0.6;
     pointer-events: none;
+}
+
+/* Link Button Click-Effekt */
+.link-button {
+    transition: background-color 0.15s ease;
+}
+
+.link-button:hover {
+    background-color: #0056b3 !important;
+}
+
+.link-button:active,
+.link-button:focus {
+    background-color: #003d82 !important;
 }
 
 /* Mobile optimizations */
