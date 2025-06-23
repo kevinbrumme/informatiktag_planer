@@ -1,9 +1,9 @@
 // Development-Modus erkennen
 const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port;
 
-const CACHE_NAME = isDevelopment ? 'informatiktag-dev' : 'informatiktag-v1.0.2';
-const STATIC_CACHE = isDevelopment ? 'informatiktag-static-dev' : 'informatiktag-static-v6';
-const API_CACHE = isDevelopment ? 'informatiktag-api-dev' : 'informatiktag-api-v6';
+const CACHE_NAME = isDevelopment ? 'informatiktag-dev' : 'informatiktag-v1.0.3';
+const STATIC_CACHE = isDevelopment ? 'informatiktag-static-dev' : 'informatiktag-static-v7';
+const API_CACHE = isDevelopment ? 'informatiktag-api-dev' : 'informatiktag-api-v7';
 
 // Assets die immer gecacht werden sollen
 const STATIC_ASSETS = [
@@ -111,6 +111,10 @@ self.addEventListener('install', event => {
             }
 
             console.log('[SW] Installation complete - All assets cached for offline use');
+
+            // Clients über neue Version informieren
+            notifyClientsAboutUpdate('new-version-available');
+
             // Sofort aktivieren
             return self.skipWaiting();
         })
@@ -139,6 +143,9 @@ self.addEventListener('activate', event => {
             self.clients.claim()
         ]).then(() => {
             console.log('[SW] Activation complete');
+
+            // Clients über erfolgreiche Aktivierung informieren
+            notifyClientsAboutUpdate('update-ready');
         })
     );
 });
@@ -325,5 +332,44 @@ async function updateCaches() {
 
     } catch (error) {
         console.log('[SW] Cache update failed:', error);
+    }
+}
+
+// Message-Handler für Kommunikation mit der App
+self.addEventListener('message', event => {
+    console.log('[SW] Message received:', event.data);
+
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        console.log('[SW] Skip waiting requested');
+        self.skipWaiting();
+    }
+
+    if (event.data && event.data.type === 'GET_VERSION') {
+        event.ports[0].postMessage({
+            type: 'VERSION_INFO',
+            version: CACHE_NAME
+        });
+    }
+});
+
+// Hilfsfunktion zum Benachrichtigen der Clients
+async function notifyClientsAboutUpdate(updateType) {
+    try {
+        const clients = await self.clients.matchAll({
+            includeUncontrolled: true,
+            type: 'window'
+        });
+
+        console.log(`[SW] Notifying ${clients.length} clients about: ${updateType}`);
+
+        clients.forEach(client => {
+            client.postMessage({
+                type: updateType,
+                version: CACHE_NAME,
+                timestamp: Date.now()
+            });
+        });
+    } catch (error) {
+        console.log('[SW] Failed to notify clients:', error);
     }
 } 

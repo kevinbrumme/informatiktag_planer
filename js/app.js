@@ -75,6 +75,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (firstNavItem) {
         updateNavIndicator(firstNavItem);
     }
+
+    // Regelmäßig nach Updates suchen (alle 5 Minuten)
+    setInterval(checkForUpdates, 5 * 60 * 1000);
+
+    // Auch beim Focus der App nach Updates suchen
+    window.addEventListener('focus', checkForUpdates);
 });
 
 // Verfügbare Sprachen erkennen
@@ -481,8 +487,20 @@ async function registerServiceWorker() {
 
             // Nachrichten vom Service Worker empfangen
             navigator.serviceWorker.addEventListener('message', (event) => {
+                console.log('[App] Service Worker message:', event.data);
+
                 if (event.data && event.data.type === 'CACHE_UPDATED') {
                     console.log('[App] Cache was updated');
+                }
+
+                if (event.data && event.data.type === 'new-version-available') {
+                    console.log('[App] New version available:', event.data.version);
+                    showUpdateNotification();
+                }
+
+                if (event.data && event.data.type === 'update-ready') {
+                    console.log('[App] Update ready:', event.data.version);
+                    showUpdateNotification();
                 }
             });
 
@@ -501,6 +519,14 @@ function showUpdateNotification() {
     const updateNotification = document.getElementById('updateNotification');
     if (updateNotification) {
         updateNotification.classList.remove('hidden');
+
+        // Automatisch nach 10 Sekunden ausblenden falls nicht geklickt
+        setTimeout(() => {
+            if (!updateNotification.classList.contains('hidden')) {
+                console.log('[App] Auto-hiding update notification after 10 seconds');
+                updateNotification.classList.add('hidden');
+            }
+        }, 10000);
     }
 }
 
@@ -514,15 +540,34 @@ function hideUpdateNotification() {
 
 // App neu laden
 function reloadApp() {
+    console.log('[App] Reloading app...');
+    hideUpdateNotification();
+
     if (serviceWorkerRegistration && serviceWorkerRegistration.waiting) {
+        console.log('[App] Activating waiting service worker');
         serviceWorkerRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
         serviceWorkerRegistration.waiting.addEventListener('statechange', (e) => {
             if (e.target.state === 'activated') {
+                console.log('[App] Service worker activated, reloading page');
                 window.location.reload();
             }
         });
     } else {
+        console.log('[App] No waiting service worker, force reload');
         window.location.reload();
+    }
+}
+
+// Manuell nach Updates suchen
+async function checkForUpdates() {
+    if (serviceWorkerRegistration) {
+        console.log('[App] Checking for updates...');
+        try {
+            await serviceWorkerRegistration.update();
+            console.log('[App] Update check completed');
+        } catch (error) {
+            console.error('[App] Update check failed:', error);
+        }
     }
 }
 
