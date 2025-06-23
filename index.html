@@ -40,7 +40,7 @@
     </header>
 
     <!-- Sticky Titel (getrennt vom Header) -->
-    <div id="headerBottom" class="sticky top-0 z-50 header-container text-center">
+    <div id="headerBottom" class="sticky top-0 z-50 header-container text-center shadow-tech">
         <div class="px-4">
             <h1 class="font-bold text-xl py-3" id="headerTitle">INFORMATIKTAG 2025</h1>
         </div>
@@ -52,24 +52,25 @@
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/85 border-tech-top backdrop-blur-sm z-50 rounded-t-3xl">
-        <div class="flex justify-around pt-1 pb-2 relative">
+    <nav
+        class="fixed bottom-2 left-2 right-2 bg-white/60 menu-backdrop z-50 rounded-3xl border-tech shadow-tech overflow-hidden">
+        <div class="flex justify-around py-1 relative">
             <!-- Animierte Linie -->
             <div id="nav-indicator" class="nav-indicator"></div>
-            <button id="nav-agenda" class="nav-item flex flex-col items-center px-3 py-2 text-xs rounded-none">
-                <i class="ph ph-cards-three text-xl mb-1 icon-outline"></i>
-                <i class="ph-fill ph-cards-three text-xl mb-1 icon-filled hidden"></i>
+            <button id="nav-agenda" class="nav-item flex flex-col items-center px-3 py-1 text-sm rounded-none">
+                <i class="ph ph-cards-three text-2xl mb-1 icon-outline"></i>
+                <i class="ph-fill ph-cards-three text-2xl mb-1 icon-filled hidden"></i>
                 <span class="mono">AGENDA</span>
             </button>
-            <button id="nav-map" class="nav-item flex flex-col items-center px-3 py-2 text-xs rounded-none">
-                <i class="ph ph-map-pin-simple-area text-xl mb-1 icon-outline"></i>
-                <i class="ph-fill ph-map-pin-simple-area text-xl mb-1 icon-filled hidden"></i>
+            <button id="nav-map" class="nav-item flex flex-col items-center px-3 py-1 text-sm rounded-none">
+                <i class="ph ph-map-pin-simple-area text-2xl mb-1 icon-outline"></i>
+                <i class="ph-fill ph-map-pin-simple-area text-2xl mb-1 icon-filled hidden"></i>
                 <span class="mono">PLAN</span>
             </button>
 
-            <button id="nav-info" class="nav-item flex flex-col items-center px-3 py-2 text-xs rounded-none">
-                <i class="ph ph-info text-xl mb-1 icon-outline"></i>
-                <i class="ph-fill ph-info text-xl mb-1 icon-filled hidden"></i>
+            <button id="nav-info" class="nav-item flex flex-col items-center px-3 py-1 text-sm rounded-none">
+                <i class="ph ph-info text-2xl mb-1 icon-outline"></i>
+                <i class="ph-fill ph-info text-2xl mb-1 icon-filled hidden"></i>
                 <span class="mono">INFO</span>
             </button>
         </div>

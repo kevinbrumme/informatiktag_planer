@@ -202,27 +202,23 @@ function updateNavIndicator(activeButton) {
 
     if (!indicator || !activeButton || !navContainer) return;
 
-    // Text-Span Element finden
-    const textSpan = activeButton.querySelector('span');
-    if (!textSpan) return;
-
-    // Positionen ermitteln
+    // Button-Position ermitteln
     const buttonRect = activeButton.getBoundingClientRect();
     const containerRect = navContainer.getBoundingClientRect();
-    const textRect = textSpan.getBoundingClientRect();
 
     // Relative Position des Buttons innerhalb des Containers
-    const leftOffset = buttonRect.left - containerRect.left;
+    const buttonLeft = buttonRect.left - containerRect.left;
     const buttonWidth = buttonRect.width;
 
-    // Textbreite und zentrierte Position
-    const textWidth = textRect.width;
-    const textLeft = textRect.left - containerRect.left;
+    // Kreis zentriert unter dem Button positionieren
+    const buttonCenterX = buttonLeft + (buttonWidth / 2);
+    const circleWidth = 360;
+    const circleLeft = buttonCenterX - (circleWidth / 2) - 10; // 10px Korrektur nach links
 
-    // Linie an Textbreite anpassen und zentrieren
-    indicator.style.width = `${textWidth}px`;
-    indicator.style.left = `${textLeft}px`;
+    // Kreis positionieren - Größe bleibt im CSS definiert
+    indicator.style.left = `${circleLeft}px`;
     indicator.style.transform = 'none';
+    // width und height werden NICHT gesetzt - bleiben im CSS
 }
 
 // Sprachwechsel initialisieren
@@ -347,7 +343,7 @@ function renderAgenda() {
         const categoryColor = event.category ? getCategoryColor(event.category) : '';
 
         return `
-                    <div class="event-card pt-2 pb-0 relative">
+                    <div class="event-card shadow-tech pt-2 pb-0 relative">
                         <!-- Event Type Badge rechts oben (nur wenn Kategorie vorhanden) -->
                         ${categoryText && event.category ? `
                             <span class="event-type-badge" style="background-color: ${categoryColor}; color: #003c61;">
@@ -394,7 +390,7 @@ function renderMap() {
     return `
         <div>
             <!-- Gebäudeplan -->
-            <div class="map-container mb-6 rounded-xl bg-white overflow-hidden">
+            <div class="map-container shadow-tech mb-6 rounded-xl bg-white overflow-hidden">
                 <div class="relative rounded-lg overflow-hidden" style="height: 300px;">
                     <div class="absolute top-2 left-2 z-20 bg-white/90 backdrop-blur-sm px-2 py-1 rounded">
                         <div class="text-lg mono">Lageplan</div>
@@ -415,7 +411,7 @@ function renderMap() {
                 <h3 class="mono text-lg mb-4">STATIONEN</h3>
                 <div class="space-y-2">
                     ${stations.map((station, index) => `
-                        <div class="map-station-item">
+                        <div class="map-station-item shadow-tech">
                             <div class="map-station-number" style="background-color: ${stationsColor}; color: white;">${index + 1}</div>
                             <div class="map-station-text">${station}</div>
                         </div>
@@ -428,7 +424,7 @@ function renderMap() {
                 <h3 class="mono text-lg mb-4">LEGENDE</h3>
                 <div class="space-y-2">
                     ${legend.map(item => `
-                        <div class="map-station-item">
+                        <div class="map-station-item shadow-tech">
                             <div class="map-station-number" style="background-color: ${item.color}; color: white;">${item.symbol}</div>
                             <div class="map-station-text">${item.text}</div>
                         </div>
@@ -446,7 +442,7 @@ function renderInfo() {
     return `
         <div>
             <div class="space-y-4">
-                <div class="ui-element p-4 rounded-lg">
+                <div class="ui-element shadow-tech p-4 rounded-lg">
                     <h3 class="mono text-lg mb-3">STUDIUM INFORMATIK</h3>
                     <p class="text-sm mb-3">Das Studium der Informatik an der Uni Oldenburg ist ein wissenschaftliches Studium, d.h. es qualifiziert Absolvent*innen selbstständig und mit wissenschaftlichen Methoden neuartige Fragestellungen im Bereich der Informatik und ihrer Anwendungen zu untersuchen und zu lösen.</p>
                     <a href="https://www.informatik-uni-oldenburg.de/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 text-sm text-white rounded-md hover:opacity-90 transition-opacity" style="background-color: #004e98;">
@@ -455,11 +451,11 @@ function renderInfo() {
                     </a>
                 </div>
 
-                <div class="ui-element p-4 rounded-lg">
+                <div class="ui-element shadow-tech p-4 rounded-lg">
                     <h3 class="mono text-lg mb-3">NETZWERK</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.wifiInfo || 'SSID: UniOL-Guest'}</p>
                 </div>
-                <div class="ui-element p-4 rounded-lg">
+                <div class="ui-element shadow-tech p-4 rounded-lg">
                     <h3 class="mono text-lg mb-3">NOTFALL</h3>
                     <p class="text-sm terminal p-2 inline-block">${translations.emergencyInfo || 'CALL: 0441-798-0'}</p>
                 </div>

@@ -139,8 +139,8 @@ body::before {
 
 /* Header Bottom - nur untere Ecken abrunden */
 #headerBottom {
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
 }
 
 /* Header Text weiß */
@@ -157,6 +157,7 @@ body::before {
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.02em;
+    text-shadow: 1px 1px rgba(255, 255, 255, 0.6);
 }
 
 .nav-item:hover {
@@ -168,19 +169,29 @@ body::before {
     color: var(--color-primary);
 }
 
+.nav-item span {
+    transition: transform 0.4s ease;
+}
+
+.nav-item.active span {
+    transform: scale(1.15);
+}
+
 .nav-item svg {
     color: var(--color-primary);
 }
 
-/* Animierte Navigation Linie */
+/* Animierte Navigation Kreis mit Glow-Effekt */
 .nav-indicator {
     position: absolute;
-    bottom: 12px;
-    left: 0;
-    height: 1px;
-    background-color: var(--color-primary);
-    transition: all 0.3s ease;
-    width: 40px;
+    bottom: -120px;
+    height: 200px;
+    width: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 60, 97, 0.35) 0%, rgba(0, 60, 97, 0.0) 60%, transparent 100%);
+    transition: all 0.4s ease;
+    z-index: -1;
+    /* JavaScript wird left und transform setzen */
 }
 
 /* Event Cards */
@@ -263,6 +274,14 @@ textarea:focus {
 
 .border-tech-top {
     border-top: var(--border-width) solid var(--color-border);
+}
+
+.shadow-tech {
+    box-shadow: 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.menu-backdrop {
+    backdrop-filter: blur(16px) brightness(1.1);
 }
 
 .text-tech {
