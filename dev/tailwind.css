@@ -195,14 +195,14 @@ body::before {
 
 /* Bottom Navigation mit Safe Area Support */
 .bottom-nav-safe {
-    bottom: calc(1.2rem + env(safe-area-inset-bottom));
+    bottom: calc(1rem + env(safe-area-inset-bottom));
     transition: bottom 0.3s ease;
 }
 
 /* Fallback für ältere Browser ohne safe-area-inset Unterstützung */
 @supports not (bottom: env(safe-area-inset-bottom)) {
     .bottom-nav-safe {
-        bottom: 1.2rem;
+        bottom: 1rem;
     }
 }
 
@@ -319,6 +319,7 @@ textarea:focus {
 
 .menu-backdrop {
     backdrop-filter: blur(16px) brightness(1.1);
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 .text-tech {
