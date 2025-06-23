@@ -1,9 +1,9 @@
 // Development-Modus erkennen
 const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.port;
 
-const CACHE_NAME = isDevelopment ? 'informatiktag-dev' : 'informatiktag-v1.0.3';
-const STATIC_CACHE = isDevelopment ? 'informatiktag-static-dev' : 'informatiktag-static-v7';
-const API_CACHE = isDevelopment ? 'informatiktag-api-dev' : 'informatiktag-api-v7';
+const CACHE_NAME = isDevelopment ? 'informatiktag-dev' : 'informatiktag-v1.0.4';
+const STATIC_CACHE = isDevelopment ? 'informatiktag-static-dev' : 'informatiktag-static-v8';
+const API_CACHE = isDevelopment ? 'informatiktag-api-dev' : 'informatiktag-api-v8';
 
 // Assets die immer gecacht werden sollen
 const STATIC_ASSETS = [
