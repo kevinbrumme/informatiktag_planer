@@ -449,9 +449,6 @@
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
   }
-  .pb-24 {
-    padding-bottom: calc(var(--spacing) * 24);
-  }
   .text-center {
     text-align: center;
   }
@@ -579,7 +576,6 @@ button, .nav-item, .btn-primary, .btn-secondary {
   touch-action: none;
   -webkit-user-drag: none;
   -moz-user-drag: none;
-  user-drag: none;
 }
 @font-face {
   font-family: 'JetBrains Mono';
@@ -710,6 +706,14 @@ body::before {
 @supports not (bottom: env(safe-area-inset-bottom)) {
   .update-notification-safe {
     bottom: 5rem;
+  }
+}
+.main-content-safe {
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+}
+@supports not (padding-bottom: env(safe-area-inset-bottom)) {
+  .main-content-safe {
+    padding-bottom: 6rem;
   }
 }
 .event-card {

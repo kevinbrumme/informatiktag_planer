@@ -40,7 +40,6 @@ button,
     /* Verhindert Drag-and-Drop */
     -webkit-user-drag: none;
     -moz-user-drag: none;
-    user-drag: none;
 }
 
 /* Lokale Font-Definitionen */
@@ -217,6 +216,18 @@ body::before {
 @supports not (bottom: env(safe-area-inset-bottom)) {
     .update-notification-safe {
         bottom: 5rem;
+    }
+}
+
+/* Main Content mit Safe Area Support für Bottom Padding */
+.main-content-safe {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+}
+
+/* Fallback für Main Content */
+@supports not (padding-bottom: env(safe-area-inset-bottom)) {
+    .main-content-safe {
+        padding-bottom: 6rem;
     }
 }
 
