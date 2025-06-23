@@ -221,7 +221,7 @@ function updateNavIndicator(activeButton) {
     // Kreis zentriert unter dem Button positionieren
     const buttonCenterX = buttonLeft + (buttonWidth / 2);
     const circleWidth = 360;
-    const circleLeft = buttonCenterX - (circleWidth / 2) - 10; // 10px Korrektur nach links
+    const circleLeft = buttonCenterX - (circleWidth / 2); // Perfekt zentriert
 
     // Kreis positionieren - Größe bleibt im CSS definiert
     indicator.style.left = `${circleLeft}px`;
