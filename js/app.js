@@ -299,7 +299,7 @@ function showSection(section) {
     window.scrollTo(0, 0);
 
     // Fade-out Animation
-    mainContent.style.transition = 'opacity 0.1s ease';
+    mainContent.style.transition = 'opacity 0.3s ease';
     mainContent.style.opacity = '0';
 
     setTimeout(() => {
@@ -323,7 +323,7 @@ function showSection(section) {
 
         // Fade-in Animation
         mainContent.style.opacity = '1';
-    }, 100);
+    }, 300);
 }
 
 // Kategorie-Farben definieren (mit 20% Opacity)

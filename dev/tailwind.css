@@ -196,14 +196,14 @@ body::before {
 
 /* Bottom Navigation mit Safe Area Support */
 .bottom-nav-safe {
-    bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    bottom: calc(1.2rem + env(safe-area-inset-bottom));
     transition: bottom 0.3s ease;
 }
 
 /* Fallback für ältere Browser ohne safe-area-inset Unterstützung */
 @supports not (bottom: env(safe-area-inset-bottom)) {
     .bottom-nav-safe {
-        bottom: 1.5rem;
+        bottom: 1.2rem;
     }
 }
 

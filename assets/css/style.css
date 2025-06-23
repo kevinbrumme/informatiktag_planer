@@ -695,12 +695,12 @@ body::before {
   z-index: -1;
 }
 .bottom-nav-safe {
-  bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  bottom: calc(1.2rem + env(safe-area-inset-bottom));
   transition: bottom 0.3s ease;
 }
 @supports not (bottom: env(safe-area-inset-bottom)) {
   .bottom-nav-safe {
-    bottom: 1.5rem;
+    bottom: 1.2rem;
   }
 }
 .update-notification-safe {
