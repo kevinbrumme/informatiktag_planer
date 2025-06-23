@@ -33,23 +33,23 @@
         "end": "10:30",
         "title": "Informatik-Tour",
         "location": "Treffpunkt: An der Information",
-        "description": "Infotext XXX",
+        "description": "Du willst wissen, wie ein Informatikstudium wirklich aussieht? Bei unserer Rundtour bekommst du exklusive Einblicke in die Uni, die Fachräume und verschiedene Labore der Informatik. Studierende führen dich durch den Campus, zeigen dir spannende Projekte und erzählen aus dem echten Studienalltag. Ideal, um Atmosphäre zu schnuppern, Fragen zu stellen – und herauszufinden, ob Informatik zu dir passt.",
         "category": "Tour"
     },
     {
         "start": "10:00",
         "end": "10:30",
-        "title": "Workshop XXX",
+        "title": "Workshop CyberDefenseLab",
         "location": "Treffpunkt: Startpunkt Workshops",
-        "description": "Infotext XXX",
+        "description": "Wie sicher sind eigentlich deine Daten im Internet? In diesem Workshop erfährst du, worauf man beim Surfen achten sollte, was gute Passwörter ausmacht und wie man sich vor typischen Gefahren schützt. Dabei lernst du auch, welchen Risiken Server und Informationen täglich im Netz ausgesetzt sind – und kannst sogar selbst in die Rolle einesr Hackerin schlüpfen, um zu verstehen, wie Angriffe funktionieren. Spannend, interaktiv und mit vielen Aha-Momenten!",
         "category": "Workshop"
     },
     {
-        "start": "10:15",
-        "end": "10:45",
-        "title": "Workshop XXX",
+        "start": "10:30",
+        "end": "11:00",
+        "title": "Workshop KI mit Calliope mini",
         "location": "Treffpunkt: Startpunkt Workshops",
-        "description": "Infotext XXX",
+        "description": "Wie kann ein kleiner Mikrocontroller wie der Calliope Mini Bewegungen erkennen – und was hat das mit Künstlicher Intelligenz zu tun? In diesem Workshop lernst du, wie du mithilfe einfacher Gestenerkennung spannende Projekte umsetzen kannst. Entdecke spielerisch, wie Maschinen „lernen“, auf deine Bewegungen zu reagieren!",
         "category": "Workshop"
     },
     {
@@ -57,15 +57,15 @@
         "end": "11:05",
         "title": "Informatik-Tour",
         "location": "Treffpunkt: An der Information",
-        "description": "Infotext XXX",
+        "description": "Du willst wissen, wie ein Informatikstudium wirklich aussieht? Bei unserer Rundtour bekommst du exklusive Einblicke in die Uni, die Fachräume und verschiedene Labore der Informatik. Studierende führen dich durch den Campus, zeigen dir spannende Projekte und erzählen aus dem echten Studienalltag. Ideal, um Atmosphäre zu schnuppern, Fragen zu stellen – und herauszufinden, ob Informatik zu dir passt.",
         "category": "Tour"
     },
     {
-        "start": "11:00",
+        "start": "11:15",
         "end": "11:45",
-        "title": "Workshop XXX",
+        "title": "Workshop KI mit Calliope mini",
         "location": "Treffpunkt: Startpunkt Workshops",
-        "description": "Infotext XXX",
+        "description": "Wie kann ein kleiner Mikrocontroller wie der Calliope Mini Bewegungen erkennen – und was hat das mit Künstlicher Intelligenz zu tun? In diesem Workshop lernst du, wie du mithilfe einfacher Gestenerkennung spannende Projekte umsetzen kannst. Entdecke spielerisch, wie Maschinen „lernen“, auf deine Bewegungen zu reagieren!",
         "category": "Workshop"
     },
     {
@@ -73,13 +73,13 @@
         "end": "11:45",
         "title": "Informatik-Tour",
         "location": "Treffpunkt: An der Information",
-        "description": "Infotext XXX",
+        "description": "Du willst wissen, wie ein Informatikstudium wirklich aussieht? Bei unserer Rundtour bekommst du exklusive Einblicke in die Uni, die Fachräume und verschiedene Labore der Informatik. Studierende führen dich durch den Campus, zeigen dir spannende Projekte und erzählen aus dem echten Studienalltag. Ideal, um Atmosphäre zu schnuppern, Fragen zu stellen – und herauszufinden, ob Informatik zu dir passt.",
         "category": "Tour"
     },
     {
         "start": "12:00",
         "end": "12:10",
-        "title": "Ankündigung Kahoot und Tombola",
+        "title": "Quiz, Tombola & Infos",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Vorstellung des interaktiven Quiz-Spiels und der Tombola-Verlosung. Informationen zu Teilnahme und Preisen.",
         "category": "Quiz"
@@ -87,7 +87,7 @@
     {
         "start": "12:10",
         "end": "12:20",
-        "title": "Bachelorstudiengänge",
+        "title": "Vorstellung Informatik Bachelorstudiengänge",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Detaillierte Informationen zu den Bachelor-Studiengängen Informatik, Wirtschaftsinformatik und den Studienaufbau.",
         "category": "Vorlesung"
@@ -103,7 +103,7 @@
     {
         "start": "12:30",
         "end": "12:40",
-        "title": "Masterstudiengänge",
+        "title": "Vorstellung Informatik Masterstudiengänge",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Informationen zu den Master-Studiengängen, Spezialisierungsmöglichkeiten und Forschungsschwerpunkten.",
         "category": "Vorlesung"
