@@ -31,10 +31,10 @@
     {
         "start": "10:00",
         "end": "10:30",
-        "title": "Führung XXX",
+        "title": "Informatik-Tour",
         "location": "Treffpunkt: An der Information",
         "description": "Infotext XXX",
-        "category": "Führung"
+        "category": "Tour"
     },
     {
         "start": "10:00",
@@ -55,10 +55,10 @@
     {
         "start": "10:35",
         "end": "11:05",
-        "title": "Führung XXX",
+        "title": "Informatik-Tour",
         "location": "Treffpunkt: An der Information",
         "description": "Infotext XXX",
-        "category": "Führung"
+        "category": "Tour"
     },
     {
         "start": "11:00",
@@ -71,10 +71,10 @@
     {
         "start": "11:15",
         "end": "11:45",
-        "title": "Führung XXX",
+        "title": "Informatik-Tour",
         "location": "Treffpunkt: An der Information",
         "description": "Infotext XXX",
-        "category": "Führung"
+        "category": "Tour"
     },
     {
         "start": "12:00",
@@ -82,7 +82,7 @@
         "title": "Ankündigung Kahoot und Tombola",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "Vorstellung des interaktiven Quiz-Spiels und der Tombola-Verlosung. Informationen zu Teilnahme und Preisen.",
-        "category": "quiz"
+        "category": "Quiz"
     },
     {
         "start": "12:10",
@@ -98,7 +98,7 @@
         "title": "Quiz",
         "location": "Veranstaltungsort: A14 - Hörsaal 2",
         "description": "",
-        "category": "quiz"
+        "category": "Quiz"
     },
     {
         "start": "12:30",

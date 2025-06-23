@@ -6,6 +6,7 @@ let events = [];
 let theme = {};
 let availableLanguages = [];
 let stations = [];
+let letterStations = [];
 let stationsColor = '#45B7D1';
 let legend = [];
 
@@ -144,6 +145,7 @@ async function loadStations() {
         const response = await fetch('data/stations.json');
         const stationsData = await response.json();
         stations = stationsData.stations || stationsData; // Rückwärtskompatibilität
+        letterStations = stationsData.letterStations || []; // Buchstaben-Stationen
         stationsColor = stationsData.color || '#45B7D1'; // Standardfarbe falls nicht definiert
     } catch (error) {
         console.error('Fehler beim Laden der Stationen:', error);
@@ -331,8 +333,8 @@ function getCategoryColor(category) {
     const categoryColors = {
         'Vorlesung': 'rgba(0, 170, 217, 0.2)',   // Blau mit 20% Opacity
         'Workshop': 'rgba(201, 212, 0, 0.2)',    // Grün mit 20% Opacity
-        'Führung': 'rgba(242, 145, 0, 0.2)',     // Orange mit 20% Opacity
-        'quiz': 'rgba(212, 57, 11, 0.2)'         // Rot mit 20% Opacity
+        'Tour': 'rgba(242, 145, 0, 0.2)',     // Orange mit 20% Opacity
+        'Quiz': 'rgba(212, 57, 11, 0.2)'         // Rot mit 20% Opacity
     };
 
     return categoryColors[category] || 'rgba(102, 102, 102, 0.2)'; // Fallback Grau mit 20% Opacity
@@ -399,8 +401,15 @@ function renderMap() {
             <div class="map-container shadow-tech mb-6 rounded-xl bg-white overflow-hidden">
                 <div class="relative rounded-lg overflow-hidden" style="height: 300px;">
                     <div class="absolute top-2 left-2 z-20 bg-white/80 backdrop-blur-sm px-2 py-1 rounded">
-                        <div class="text-lg mono">Lageplan</div>
-                        <div class="text-sm mono text-gray-600">A14 Hörsaalzentrum</div>
+                        <div class="text-lg mono mb-2">A14 Hörsaalzentrum</div>
+                        <div class="space-y-2">
+                            ${legend.map(item => `
+                                <div class="flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full flex items-center justify-center mono font-bold" style="background-color: ${item.color}; color: white; font-size: 0.875rem;">${item.symbol}</div>
+                                    <span class="mono" style="font-size: 0.875rem;">${item.text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                                     <img id="mapImage" src="assets/floorplan.png" alt="Gebäudeplan"
                      class="w-full h-full object-contain cursor-grab p-2"
@@ -412,27 +421,23 @@ function renderMap() {
                 </div>
             </div>
 
-            <!-- Nummerierte Stationen -->
+            <!-- Stationen -->
             <div class="mb-6">
                 <h3 class="mono text-lg mb-4">STATIONEN</h3>
                 <div class="space-y-2">
+                    <!-- Buchstaben-Stationen zuerst -->
+                    ${letterStations.map(station => `
+                        <div class="map-station-item shadow-tech">
+                            <div class="map-station-number" style="background-color: ${station.color}; color: white;">${station.symbol}</div>
+                            <div class="map-station-text">${station.text}</div>
+                        </div>
+                    `).join('')}
+                    
+                    <!-- Dann nummerierte Stationen -->
                     ${stations.map((station, index) => `
                         <div class="map-station-item shadow-tech">
                             <div class="map-station-number" style="background-color: ${stationsColor}; color: white;">${index + 1}</div>
                             <div class="map-station-text">${station}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-
-            <!-- Legende -->
-            <div>
-                <h3 class="mono text-lg mb-4">LEGENDE</h3>
-                <div class="space-y-2">
-                    ${legend.map(item => `
-                        <div class="map-station-item shadow-tech">
-                            <div class="map-station-number" style="background-color: ${item.color}; color: white;">${item.symbol}</div>
-                            <div class="map-station-text">${item.text}</div>
                         </div>
                     `).join('')}
                 </div>

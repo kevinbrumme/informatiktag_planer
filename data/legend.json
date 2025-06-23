@@ -1,7 +1,7 @@
 [
     {
         "symbol": "I",
-        "text": "Information, Anmeldung, Startpunkt Informatik-Tour",
+        "text": "Information",
         "type": "info",
         "color": "#e72501"
     },
@@ -10,11 +10,5 @@
         "text": "Garderobe",
         "type": "garderobe",
         "color": "#047c7b"
-    },
-    {
-        "symbol": "W",
-        "text": "Startpunkt Workshops",
-        "type": "workshop",
-        "color": "#98cb2e"
     }
 ]

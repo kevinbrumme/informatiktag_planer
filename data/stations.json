@@ -1,5 +1,17 @@
 {
     "color": "#0551a4",
+    "letterStations": [
+        {
+            "symbol": "W",
+            "text": "Startpunkt der Workshops",
+            "color": "#7ED321"
+        },
+        {
+            "symbol": "T",
+            "text": "Startpunkt der Informatik-Touren",
+            "color": "#f29102"
+        }
+    ],
     "stations": [
         "Studienberatung Wirtschaftsinformatik",
         "Applied Artifical Intelligence",
