@@ -187,7 +187,7 @@ body::before {
     height: 200px;
     width: 360px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 60, 97, 0.35) 0%, rgba(0, 60, 97, 0.0) 60%, transparent 100%);
+    background: radial-gradient(circle, rgba(0, 60, 97, 0.45) 0%, rgba(0, 60, 97, 0.0) 60%, transparent 100%);
     transition: all 0.4s ease;
     z-index: -1;
     /* JavaScript wird left und transform setzen */
