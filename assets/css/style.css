@@ -407,12 +407,6 @@
       background-color: color-mix(in oklab, var(--color-white) 80%, transparent);
     }
   }
-  .bg-white\/90 {
-    background-color: color-mix(in srgb, #fff 90%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 90%, transparent);
-    }
-  }
   .object-contain {
     object-fit: contain;
   }
@@ -547,12 +541,12 @@
     --tw-ease: var(--ease-in-out);
     transition-timing-function: var(--ease-in-out);
   }
-  .hover\:bg-white\/90 {
+  .hover\:bg-white\/80 {
     &:hover {
       @media (hover: hover) {
-        background-color: color-mix(in srgb, #fff 90%, transparent);
+        background-color: color-mix(in srgb, #fff 80%, transparent);
         @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-white) 90%, transparent);
+          background-color: color-mix(in oklab, var(--color-white) 80%, transparent);
         }
       }
     }
@@ -699,9 +693,6 @@ body::before {
   background: radial-gradient(circle, rgba(0, 60, 97, 0.35) 0%, rgba(0, 60, 97, 0.0) 60%, transparent 100%);
   transition: all 0.4s ease;
   z-index: -1;
-}
-nav {
-  padding-bottom: env(safe-area-inset-bottom);
 }
 .bottom-nav-safe {
   bottom: calc(0.5rem + env(safe-area-inset-bottom));

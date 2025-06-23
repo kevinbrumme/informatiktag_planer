@@ -398,7 +398,7 @@ function renderMap() {
             <!-- Gebäudeplan -->
             <div class="map-container shadow-tech mb-6 rounded-xl bg-white overflow-hidden">
                 <div class="relative rounded-lg overflow-hidden" style="height: 300px;">
-                    <div class="absolute top-2 left-2 z-20 bg-white/90 backdrop-blur-sm px-2 py-1 rounded">
+                    <div class="absolute top-2 left-2 z-20 bg-white/80 backdrop-blur-sm px-2 py-1 rounded">
                         <div class="text-lg mono">Lageplan</div>
                         <div class="text-sm mono text-gray-600">A14 Hörsaalzentrum</div>
                     </div>
@@ -406,8 +406,8 @@ function renderMap() {
                      class="w-full h-full object-contain cursor-grab p-2"
                          style="transform: scale(1) translate(0px, 0px);">
                     <div id="mapZoomControls" class="absolute bottom-2 right-2 flex flex-col z-20">
-                        <button onclick="console.log('[Button] Plus clicked'); zoomMap(1.2)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
-                        <button onclick="console.log('[Button] Minus clicked'); zoomMap(0.8333)" class="text-base p-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors rounded-b-md rounded-t-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61;">−</button>
+                        <button onclick="console.log('[Button] Plus clicked'); zoomMap(1.2)" class="text-base p-0 bg-white/50 backdrop-blur-sm hover:bg-white/80 transition-colors rounded-t-md rounded-b-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61; border-bottom: none;">+</button>
+                        <button onclick="console.log('[Button] Minus clicked'); zoomMap(0.8333)" class="text-base p-0 bg-white/50 backdrop-blur-sm hover:bg-white/80 transition-colors rounded-b-md rounded-t-none" style="width: 2.25rem; height: 2.25rem; min-width: 2.25rem; min-height: 2.25rem; display: flex; align-items: center; justify-content: center; border: 1px solid #003c61;">−</button>
                     </div>
                 </div>
             </div>

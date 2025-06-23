@@ -194,11 +194,6 @@ body::before {
     /* JavaScript wird left und transform setzen */
 }
 
-/* Safe Area Support für Bottom Navigation */
-nav {
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
 /* Bottom Navigation mit Safe Area Support */
 .bottom-nav-safe {
     bottom: calc(0.5rem + env(safe-area-inset-bottom));
